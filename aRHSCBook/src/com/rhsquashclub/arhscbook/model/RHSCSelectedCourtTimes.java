@@ -19,13 +19,29 @@ public class RHSCSelectedCourtTimes extends RHSCCourtTimeList {
 	}
 
 	public void select(Date selectedDate,boolean includeBookings) {
-		this.selectedDate = selectedDate;
-		this.includeBookings = includeBookings;
+		this.setSelectedDate(selectedDate);
+		this.setIncludeBookings(includeBookings);
 		this.clear();
 	}
 
 	public void reload() {
 		if (!this.isSelected) return;
 		this.clear();
+	}
+
+	public boolean isIncludeBookings() {
+		return includeBookings;
+	}
+
+	public void setIncludeBookings(boolean includeBookings) {
+		this.includeBookings = includeBookings;
+	}
+
+	public Date getSelectedDate() {
+		return selectedDate;
+	}
+
+	public void setSelectedDate(Date selectedDate) {
+		this.selectedDate = selectedDate;
 	}
 }
