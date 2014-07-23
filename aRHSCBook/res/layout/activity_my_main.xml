@@ -27,9 +27,8 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:button="@null"
-                android:drawableTop="@drawable/courts_icon"
                 android:gravity="center"
-                android:text="Courts"
+                android:text="@string/tab_button_text_courts"
                 android1:checked="true" />
 
             <RadioButton
@@ -38,9 +37,8 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:button="@null"
-                android:drawableTop="@drawable/bookings_icon"
                 android:gravity="center"
-                android:text="My Bookings"
+                android:text="@string/tab_button_text_bookings"
                 android1:checked="false" />
 
             <RadioButton
@@ -49,9 +47,8 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:button="@null"
-                android:drawableTop="@drawable/members_icon"
                 android:gravity="center"
-                android:text="Members"
+                android:text="@string/tab_button_text_members"
                 android1:checked="false" />
         </RadioGroup>
 
