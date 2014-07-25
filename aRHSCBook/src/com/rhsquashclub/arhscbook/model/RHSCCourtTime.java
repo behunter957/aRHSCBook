@@ -67,10 +67,39 @@ public class RHSCCourtTime {
 			this.player_id[3] = jObj.has("player4_id")?jObj.getString("player4_id"):"";
 			this.player_lname = new String[4];
 			this.player_lname[0] = jObj.has("player1_lname")?jObj.getString("player1_lname"):"";
-			this.player_lname[0] = jObj.has("player2_lname")?jObj.getString("player2_lname"):"";
-			this.player_lname[0] = jObj.has("player3_lname")?jObj.getString("player3_lname"):"";
-			this.player_lname[0] = jObj.has("player4_lname")?jObj.getString("player4_lname"):"";
+			this.player_lname[1] = jObj.has("player2_lname")?jObj.getString("player2_lname"):"";
+			this.player_lname[2] = jObj.has("player3_lname")?jObj.getString("player3_lname"):"";
+			this.player_lname[3] = jObj.has("player4_lname")?jObj.getString("player4_lname"):"";
 		} catch (JSONException je) {
 		}
+	}
+
+	public String toString() {
+		String res = this.court.concat(" - ").concat(new SimpleDateFormat("MMMM d, yyyy h:mm a", 
+				Locale.ENGLISH).format(this.courtTime));
+		return res;
+	}
+	
+	public RHSCCourtTime(String bookingId,String court,String dateMMMMdyyyy,String timehmma) {
+		this.bookingId = bookingId;
+		this.court = court;
+		try {
+			this.courtTime = new SimpleDateFormat("MMMM d, yyyy h:mm a", 
+				Locale.ENGLISH).parse(dateMMMMdyyyy.concat(" ").concat(timehmma));
+		} catch (ParseException pe) {
+			this.courtTime = new Date();
+		}
+		this.status = "Available";
+		this.event = "";
+		this.player_id = new String[4];
+		this.player_id[0] = "";
+		this.player_id[1] = "";
+		this.player_id[2] = "";
+		this.player_id[3] = "";
+		this.player_lname = new String[4];
+		this.player_lname[0] = "";
+		this.player_lname[1] = "";
+		this.player_lname[2] = "";
+		this.player_lname[3] = "";		
 	}
 }

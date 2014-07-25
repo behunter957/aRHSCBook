@@ -27,5 +27,4 @@ abstract class RHSCCourtTimeList extends ArrayList<RHSCCourtTime> {
 		} catch (JSONException je) {
 		}
 	}
-	
 }

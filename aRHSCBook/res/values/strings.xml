@@ -8,5 +8,6 @@
     <string name="tab_button_text_courts">Courts</string>
     <string name="tab_button_text_bookings">My Bookings</string>
     <string name="tab_button_text_members">Members</string>
+    <string name="courts_title">Courts</string>
     
 </resources>
