@@ -75,4 +75,8 @@ public class RHSCMember {
 			//
 		}
 	}
+	
+	public String toString() {
+		return this.firstName.concat(" ").concat(this.lastName);
+	}
 }
