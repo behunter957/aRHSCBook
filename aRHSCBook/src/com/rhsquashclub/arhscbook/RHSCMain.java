@@ -1,9 +1,9 @@
 package com.rhsquashclub.arhscbook;
 
-import com.rhsquash.arhscbook.view.RHSCMemberListFragment;
-import com.rhsquash.arhscbook.view.RHSCSelectedCourtTimesFragment;
 import com.rhsquashclub.arhscbook.model.RHSCMemberList;
 import com.rhsquashclub.arhscbook.model.RHSCSelectedCourtTimes;
+import com.rhsquashclub.arhscbook.view.RHSCMemberListFragment;
+import com.rhsquashclub.arhscbook.view.RHSCSelectedCourtTimesFragment;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

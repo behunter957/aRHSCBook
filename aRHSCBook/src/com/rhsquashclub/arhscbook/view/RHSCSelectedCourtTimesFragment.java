@@ -1,4 +1,4 @@
-package com.rhsquash.arhscbook.view;
+package com.rhsquashclub.arhscbook.view;
 
 import com.rhsquashclub.arhscbook.R;
 import com.rhsquashclub.arhscbook.model.*;
