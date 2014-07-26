@@ -344,8 +344,10 @@ int string abc_shareactionprovider_share_with 0x7f0a000c
 int string abc_shareactionprovider_share_with_application 0x7f0a000b
 int string action_settings 0x7f0a000f
 int string app_name 0x7f0a000d
+int string bookings_title 0x7f0a0015
 int string courts_title 0x7f0a0014
 int string hello_world 0x7f0a000e
+int string members_title 0x7f0a0016
 int string tab_button_text_bookings 0x7f0a0012
 int string tab_button_text_courts 0x7f0a0011
 int string tab_button_text_members 0x7f0a0013

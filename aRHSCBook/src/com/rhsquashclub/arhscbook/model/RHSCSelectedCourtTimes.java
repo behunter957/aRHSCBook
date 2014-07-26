@@ -65,7 +65,7 @@ public class RHSCSelectedCourtTimes extends RHSCCourtTimeList {
 			try {
 				Date courtTime = new SimpleDateFormat("MMMM d, yyyy h:mm a",
 						Locale.ENGLISH).parse("July 22, 2014 1:30 pm");
-				for (int i = 0; i < 5; i++) {
+				for (int i = 0; i < 10; i++) {
 					String datePart = new SimpleDateFormat(
 							"MMMM d, yyyy", Locale.ENGLISH)
 							.format(courtTime);
@@ -77,7 +77,7 @@ public class RHSCSelectedCourtTimes extends RHSCCourtTimeList {
 					this.add(new RHSCCourtTime(bookId,crt,datePart,timePart));
 					Calendar cal = Calendar.getInstance();
 					cal.setTime(courtTime);
-					cal.add(Calendar.MINUTE, 20);
+					cal.add(Calendar.MINUTE, 40);
 					courtTime = cal.getTime();
 				}
 			} catch (Exception e) {

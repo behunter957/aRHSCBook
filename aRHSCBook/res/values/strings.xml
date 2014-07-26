@@ -9,5 +9,7 @@
     <string name="tab_button_text_bookings">My Bookings</string>
     <string name="tab_button_text_members">Members</string>
     <string name="courts_title">Courts</string>
+    <string name="bookings_title">My Bookings</string>
+    <string name="members_title">Member List</string>
     
 </resources>

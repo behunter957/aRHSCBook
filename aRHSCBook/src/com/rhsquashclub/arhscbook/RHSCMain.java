@@ -1,6 +1,8 @@
 package com.rhsquashclub.arhscbook;
 
+import com.rhsquash.arhscbook.view.RHSCMemberListFragment;
 import com.rhsquash.arhscbook.view.RHSCSelectedCourtTimesFragment;
+import com.rhsquashclub.arhscbook.model.RHSCMemberList;
 import com.rhsquashclub.arhscbook.model.RHSCSelectedCourtTimes;
 
 import android.support.v4.app.Fragment;
@@ -15,29 +17,37 @@ import android.widget.Toast;
 
 public class RHSCMain extends ActionBarActivity {
 
+	public static Fragment courtListFragment = new RHSCSelectedCourtTimesFragment(); 
+	public static Fragment memberListFragment = new RHSCMemberListFragment(); 
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		RHSCSelectedCourtTimes.get(this.getApplicationContext()).testSampleSelected();
+		RHSCMemberList.get(this.getApplicationContext()).testSampleSelected();
 		setContentView(R.layout.activity_rhscmain);
 		RadioGroup rg = (RadioGroup) findViewById(R.id.tabbar);
 		rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 			   public void onCheckedChanged(RadioGroup group,
                        int checkedId) {
 				   Context context = getApplicationContext();
+				   FragmentManager fm = getSupportFragmentManager(); 
                    Toast toast;
                    switch (checkedId) { //set the Model to hold the answer the user picked
                    case R.id.rad_courts:
                 	   toast = Toast.makeText(context, "Courts selected", Toast.LENGTH_SHORT);
                 	   toast.show();
+               			fm.beginTransaction().replace(R.id.TabViewFragment, RHSCMain.courtListFragment).commit(); 
                        break;
                    case R.id.rad_bookings:
                 		toast = Toast.makeText(context, "Bookings selected", Toast.LENGTH_SHORT);
                 		toast.show();
+               			fm.beginTransaction().replace(R.id.TabViewFragment, RHSCMain.courtListFragment).commit(); 
                        break;
                    case R.id.rad_members:
                 	   toast = Toast.makeText(context, "Members selected", Toast.LENGTH_SHORT);
                 	   toast.show();
+              			fm.beginTransaction().replace(R.id.TabViewFragment, RHSCMain.memberListFragment).commit(); 
                        break;
                    default:
                    }
@@ -45,9 +55,6 @@ public class RHSCMain extends ActionBarActivity {
                }			
 		});
 		
-		FragmentManager fm = getSupportFragmentManager(); 
-		Fragment fragment = new RHSCSelectedCourtTimesFragment(); 
-		fm.beginTransaction().replace(R.id.TabViewFragment, fragment).commit(); 
 	}
 
 	@Override

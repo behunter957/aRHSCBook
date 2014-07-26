@@ -1,10 +1,17 @@
 package com.rhsquashclub.arhscbook.model;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import android.content.Context;
+import android.util.Log;
 
 public class RHSCMemberList extends ArrayList<RHSCMember> {
 	
@@ -20,7 +27,7 @@ public class RHSCMemberList extends ArrayList<RHSCMember> {
 		super();
 	}
 	
-	public static RHSCMemberList get() {
+	public static RHSCMemberList get(Context c) {
 		if (memList == null) {
 			memList = new RHSCMemberList();
 		}
@@ -50,6 +57,15 @@ public class RHSCMemberList extends ArrayList<RHSCMember> {
 			}
 		} catch (JSONException je) {
 		}
+	}
+
+	public RHSCMemberList testSampleSelected() {
+		this.clear();
+		String[] mems = {"Bruce Hunter","Tony Harris","Danny Paolucci"};
+		for (String crt : mems) {
+			this.add(new RHSCMember(crt,"Active"));
+		}
+		return this;
 	}
 
 }
