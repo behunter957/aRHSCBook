@@ -6,7 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-abstract class RHSCCourtTimeList extends ArrayList<RHSCCourtTime> {
+public class RHSCCourtTimeList extends ArrayList<RHSCCourtTime> {
 	
 	/**
 	 * 

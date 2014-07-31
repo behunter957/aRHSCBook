@@ -35,8 +35,8 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 		getActivity().setTitle(R.string.courts_title); 
 		courts = RHSCSelectedCourtTimes.get(getActivity());
 		
-		ArrayAdapter<RHSCCourtTime> adapter = 
-				new ArrayAdapter<RHSCCourtTime>(getActivity(), android.R.layout.simple_list_item_1, courts);
+		RHSCCourtTimeAdapter adapter = 
+				new RHSCCourtTimeAdapter(getActivity(), R.layout.court_times_list_item_row,courts);
 		ListView lv = (ListView) view.findViewById(R.id.CourtListFragment);
 		lv.setAdapter( adapter);		
 		

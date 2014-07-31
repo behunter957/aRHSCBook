@@ -45,6 +45,20 @@ public class RHSCCourtTime {
 	public String[] getPlayer_lname() {
 		return player_lname;
 	}
+	
+	public String getCourtAndTime() {
+		String datepart = new SimpleDateFormat("h:mm a", 
+				Locale.ENGLISH).format(courtTime);
+		return court.concat(" - ").concat(datepart);
+	}
+	
+	public String getEventAndPlayers() {
+		String res = event.concat(" - ").concat(player_lname[0]).concat(",").concat(player_lname[1]);
+		if (court.equals("Court 5")) {
+			res = res.concat(",").concat(player_lname[2]).concat(",").concat(player_lname[3]);
+		}
+		return res;
+	}
 
 	public RHSCCourtTime(JSONObject jObj) {
 		try {
@@ -90,7 +104,7 @@ public class RHSCCourtTime {
 			this.courtTime = new Date();
 		}
 		this.status = "Available";
-		this.event = "";
+		this.event = "Friendly";
 		this.player_id = new String[4];
 		this.player_id[0] = "";
 		this.player_id[1] = "";
