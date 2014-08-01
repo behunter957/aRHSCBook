@@ -29,6 +29,12 @@ public class RHSCMain extends ActionBarActivity {
 		RHSCMyBookings.get(this.getApplicationContext()).testSampleSelected();
 		RHSCMemberList.get(this.getApplicationContext()).testSampleSelected();
 
+		// show courts view by default
+		FragmentManager fm = getSupportFragmentManager();
+		fm.beginTransaction()
+		.replace(R.id.TabViewFragment,
+				RHSCMain.myBookingsFragment).commit();
+
 		RadioGroup rg = (RadioGroup) findViewById(R.id.tabbar);
 		rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
