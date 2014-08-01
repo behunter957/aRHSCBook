@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -74,14 +76,25 @@ public class RHSCSelectedCourtTimes extends RHSCCourtTimeList {
 	public RHSCSelectedCourtTimes loadFromServer(RHSCServer srvr) {
 		// now start the background task
 		GetSelectedCourtTimesTask bgTask = new GetSelectedCourtTimesTask();
-		bgTask.execute(this);
+		RHSCSelectedCourtTimes[] parms = { this };
+		bgTask.execute(parms);
 		return this;
 	}
 	
-	public String getRequestURL() {
+	public URI getRequestURL() {
 		String myURL = "http://".concat(RHSCServer.get().getURL());
-		myURL = myURL.concat("/Reserve/IOSCourtListJSON.php?");
-		return myURL;
+		myURL = myURL.concat("/Reserve/IOSTimesJSON.php?");
+		myURL = myURL.concat("scheddate=2014-08-01");
+		myURL = myURL.concat("&courttype=All");
+		myURL = myURL.concat("&include=YES");
+		myURL = myURL.concat("&uid=bhunter");
+		try {
+			URI targetURI = new URI(myURL);
+			return targetURI;
+		} catch (URISyntaxException e) {
+			Log.e("UIR Syntax Exception",e.toString());
+			return null;
+		}
 	}
 
 	private class GetSelectedCourtTimesTask extends AsyncTask<RHSCSelectedCourtTimes,Void,Void> {
@@ -111,8 +124,10 @@ public class RHSCSelectedCourtTimes extends RHSCCourtTimeList {
                                 Log.e("Getter", "Failed to download file");
                         }
                 } catch (ClientProtocolException e) {
+                		Log.e("Getter", "ClientProtocolException on ".concat(targetObj.getRequestURL().toString()));
                         e.printStackTrace();
                 } catch (IOException e) {
+                    	Log.e("Getter", "IOException on ".concat(targetObj.getRequestURL().toString()));
                         e.printStackTrace();
                 }
                 

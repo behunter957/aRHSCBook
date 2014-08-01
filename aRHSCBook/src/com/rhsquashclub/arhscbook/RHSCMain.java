@@ -25,8 +25,7 @@ public class RHSCMain extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_rhscmain);
 
-		RHSCSelectedCourtTimes.get(this.getApplicationContext())
-				.testSampleSelected();
+		RHSCSelectedCourtTimes.get(this.getApplicationContext());
 		RHSCMyBookings.get(this.getApplicationContext()).testSampleSelected();
 		RHSCMemberList.get(this.getApplicationContext()).testSampleSelected();
 

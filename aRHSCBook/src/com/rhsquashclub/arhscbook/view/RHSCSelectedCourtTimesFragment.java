@@ -3,6 +3,7 @@ package com.rhsquashclub.arhscbook.view;
 import com.rhsquashclub.arhscbook.R;
 import com.rhsquashclub.arhscbook.model.RHSCCourtTime;
 import com.rhsquashclub.arhscbook.model.RHSCSelectedCourtTimes;
+import com.rhsquashclub.arhscbook.model.RHSCServer;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -33,7 +34,7 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_selectedcourtlist, container, false);
 
 		getActivity().setTitle(R.string.courts_title); 
-		courts = RHSCSelectedCourtTimes.get(getActivity());
+		courts = RHSCSelectedCourtTimes.get(getActivity()).loadFromServer(RHSCServer.get());
 		
 		RHSCCourtTimeAdapter adapter = 
 				new RHSCCourtTimeAdapter(getActivity(), R.layout.court_times_list_item_row,courts);
