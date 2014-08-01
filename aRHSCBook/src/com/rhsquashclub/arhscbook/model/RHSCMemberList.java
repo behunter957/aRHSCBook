@@ -48,7 +48,7 @@ public class RHSCMemberList extends ArrayList<RHSCMember> {
 		return GUEST;
 	}
 
-	public void loadFromJSON(String jsonString) {
+	public RHSCMemberList loadFromJSON(String jsonString) {
 		try {
 			JSONObject jObj = new JSONObject(jsonString);
 			JSONArray jArr = jObj.getJSONArray("members");
@@ -57,8 +57,13 @@ public class RHSCMemberList extends ArrayList<RHSCMember> {
 			}
 		} catch (JSONException je) {
 		}
+		return this;
 	}
 
+	public RHSCMemberList loadFromServer(RHSCServer srvr) {
+		return this;
+	}
+	
 	public RHSCMemberList testSampleSelected() {
 		this.clear();
 		String[] mems = {"Bruce Hunter","Tony Harris","Danny Paolucci"};

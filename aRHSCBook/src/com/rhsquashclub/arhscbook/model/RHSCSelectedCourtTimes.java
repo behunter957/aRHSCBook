@@ -1,11 +1,25 @@
 package com.rhsquashclub.arhscbook.model;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import org.apache.http.*;
+import org.apache.http.client.*;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 
 public class RHSCSelectedCourtTimes extends RHSCCourtTimeList {
@@ -55,6 +69,55 @@ public class RHSCSelectedCourtTimes extends RHSCCourtTimeList {
 
 	public void setSelectedDate(Date selectedDate) {
 		this.selectedDate = selectedDate;
+	}
+	
+	public RHSCSelectedCourtTimes loadFromServer(RHSCServer srvr) {
+		// now start the background task
+		GetSelectedCourtTimesTask bgTask = new GetSelectedCourtTimesTask();
+		bgTask.execute(this);
+		return this;
+	}
+	
+	public String getRequestURL() {
+		String myURL = "http://".concat(RHSCServer.get().getURL());
+		myURL = myURL.concat("/Reserve/IOSCourtListJSON.php?");
+		return myURL;
+	}
+
+	private class GetSelectedCourtTimesTask extends AsyncTask<RHSCSelectedCourtTimes,Void,Void> {
+        @Override
+        protected Void doInBackground(RHSCSelectedCourtTimes... myList) {
+        		RHSCSelectedCourtTimes targetObj = myList[0];
+                StringBuilder builder = new StringBuilder();
+                HttpClient client = new DefaultHttpClient();
+                HttpGet httpGet = new HttpGet(targetObj.getRequestURL());
+                
+                try {
+                        HttpResponse response = client.execute(httpGet);
+                        StatusLine statusLine = response.getStatusLine();
+                        int statusCode = statusLine.getStatusCode();
+                        if (statusCode == 200) {
+                                HttpEntity entity = response.getEntity();
+                                InputStream content = entity.getContent();
+                                BufferedReader reader = new BufferedReader(
+                                                new InputStreamReader(content));
+                                String line;
+                                while ((line = reader.readLine()) != null) {
+                                        builder.append(line);
+                                }
+                                Log.v("Getter", "Your data: " + builder.toString()); //response data
+                                targetObj.loadFromJSON(builder.toString());
+                        } else {
+                                Log.e("Getter", "Failed to download file");
+                        }
+                } catch (ClientProtocolException e) {
+                        e.printStackTrace();
+                } catch (IOException e) {
+                        e.printStackTrace();
+                }
+                
+                return null;
+		}
 	}
 	
 	public RHSCSelectedCourtTimes testSampleSelected() {
