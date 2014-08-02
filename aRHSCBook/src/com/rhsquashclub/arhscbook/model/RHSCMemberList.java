@@ -10,6 +10,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.rhsquashclub.arhscbook.view.RHSCCourtTimeAdapter;
+import com.rhsquashclub.arhscbook.view.RHSCGetMemberListTask;
+import com.rhsquashclub.arhscbook.view.RHSCMemberAdapter;
+import com.rhsquashclub.arhscbook.view.RHSCSelectCourtTimesTask;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -23,7 +28,7 @@ public class RHSCMemberList extends ArrayList<RHSCMember> {
 	private static RHSCMember TBD;
 	private static RHSCMember GUEST;
 	
-	private RHSCMemberList() {
+	public RHSCMemberList() {
 		super();
 	}
 	
@@ -60,8 +65,10 @@ public class RHSCMemberList extends ArrayList<RHSCMember> {
 		return this;
 	}
 
-	public RHSCMemberList loadFromServer(RHSCServer srvr) {
-		return this;
+	public void loadFromServer(RHSCMemberAdapter adapter) {
+		RHSCGetMemberListTask bgTask = new RHSCGetMemberListTask(this,adapter);
+		Void[] parms = {};
+		bgTask.execute(parms);
 	}
 	
 	public RHSCMemberList testSampleSelected() {

@@ -1,6 +1,7 @@
 package com.rhsquashclub.arhscbook.view;
 
 import com.rhsquashclub.arhscbook.R;
+import com.rhsquashclub.arhscbook.RHSCMain;
 import com.rhsquashclub.arhscbook.model.*;
 
 import android.os.Bundle;
@@ -19,7 +20,12 @@ import android.widget.ListView;
 public class RHSCMemberListFragment extends Fragment {
 	
 	private RHSCMemberList members;
-	ArrayAdapter<RHSCMember> adapter;
+	private RHSCMemberAdapter adapter;
+	
+	public RHSCMemberAdapter getAdapter() {
+		return adapter;
+	}
+
 	EditText inputSearch;
 
 	public RHSCMemberListFragment() {
@@ -37,12 +43,16 @@ public class RHSCMemberListFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_memberlist, container, false);
 
 		getActivity().setTitle(R.string.members_title); 
+		
 		members = RHSCMemberList.get(getActivity());
 		
 		adapter = 
-				new ArrayAdapter<RHSCMember>(getActivity(), android.R.layout.simple_list_item_1, members); 
+				new RHSCMemberAdapter(getActivity(), R.layout.member_list_item_row, members); 
 		ListView lv = (ListView) view.findViewById(R.id.member_list_view);
-		lv.setAdapter( adapter);		
+		lv.setAdapter( adapter);
+		
+		members.loadFromServer(adapter);
+
 
 		inputSearch = (EditText) view.findViewById(R.id.inputSearch);
         inputSearch.addTextChangedListener(new TextWatcher() {
@@ -50,7 +60,7 @@ public class RHSCMemberListFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
                 // When user changed the Text
-            	RHSCMemberListFragment.this.adapter.getFilter().filter(cs);  
+            	RHSCMemberListFragment.this.getAdapter().getFilter().filter(cs);  
             }
              
             @Override

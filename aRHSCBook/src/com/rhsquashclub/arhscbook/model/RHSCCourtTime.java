@@ -8,6 +8,8 @@ import java.util.Locale;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 public class RHSCCourtTime {
 	
 	private String bookingId;
@@ -67,9 +69,10 @@ public class RHSCCourtTime {
 			String datePart = jObj.has("courtdate")?jObj.getString("courtdate"):"";
 			String timePart = jObj.has("courttime")?jObj.getString("courttime"):"";
 			try {
-				this.courtTime = new SimpleDateFormat("MMMM d, yyyy h:mm a", 
+				this.courtTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", 
 					Locale.ENGLISH).parse(datePart.concat(" ").concat(timePart));
 			} catch (ParseException pe) {
+				Log.e("ParseException on date",pe.toString());
 				this.courtTime = new Date();
 			}
 			this.status = jObj.has("courtStatus")?jObj.getString("courtStatus"):"";

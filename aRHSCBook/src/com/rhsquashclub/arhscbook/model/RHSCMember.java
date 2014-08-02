@@ -25,6 +25,10 @@ public class RHSCMember {
 	public String getFirstName() {
 		return firstName;
 	}
+	
+	public String getSortName() {
+		return lastName.concat(", ").concat(firstName);
+	}
 
 	public String getStatus() {
 		return status;

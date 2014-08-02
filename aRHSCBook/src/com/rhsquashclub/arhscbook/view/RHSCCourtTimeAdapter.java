@@ -49,7 +49,11 @@ public class RHSCCourtTimeAdapter extends ArrayAdapter<RHSCCourtTime> {
         RHSCCourtTime courtTime = data.get(position);
         holder.courtAndtime.setText(courtTime.getCourtAndTime());
         holder.status.setText(courtTime.getStatus());
-        holder.eventAndPlayers.setText(courtTime.getEventAndPlayers());
+        if (courtTime.getStatus().equals("Available")) {
+           	holder.eventAndPlayers.setText("");
+        } else {
+        	holder.eventAndPlayers.setText(courtTime.getEventAndPlayers());
+        }
        
         return row;
     }

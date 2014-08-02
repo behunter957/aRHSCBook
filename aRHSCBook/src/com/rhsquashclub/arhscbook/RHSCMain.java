@@ -26,14 +26,15 @@ public class RHSCMain extends ActionBarActivity {
 		setContentView(R.layout.activity_rhscmain);
 
 		RHSCSelectedCourtTimes.get(this.getApplicationContext());
+
 		RHSCMyBookings.get(this.getApplicationContext()).testSampleSelected();
-		RHSCMemberList.get(this.getApplicationContext()).testSampleSelected();
+		RHSCMemberList.get(this.getApplicationContext());
 
 		// show courts view by default
 		FragmentManager fm = getSupportFragmentManager();
 		fm.beginTransaction()
 		.replace(R.id.TabViewFragment,
-				RHSCMain.myBookingsFragment).commit();
+				RHSCMain.courtListFragment).commit();
 
 		RadioGroup rg = (RadioGroup) findViewById(R.id.tabbar);
 		rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

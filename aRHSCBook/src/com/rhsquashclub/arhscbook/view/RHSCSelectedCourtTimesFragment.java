@@ -18,6 +18,8 @@ import android.widget.ListView;
 public class RHSCSelectedCourtTimesFragment extends Fragment {
 
 	private RHSCSelectedCourtTimes courts;
+	
+	private RHSCCourtTimeAdapter listAdapter;
 
 	public RHSCSelectedCourtTimesFragment() {
 		// TODO Auto-generated constructor stub
@@ -34,16 +36,23 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_selectedcourtlist, container, false);
 
 		getActivity().setTitle(R.string.courts_title); 
-		courts = RHSCSelectedCourtTimes.get(getActivity()).loadFromServer(RHSCServer.get());
 		
-		RHSCCourtTimeAdapter adapter = 
+		courts = RHSCSelectedCourtTimes.get(getActivity());
+		
+		listAdapter = 
 				new RHSCCourtTimeAdapter(getActivity(), R.layout.court_times_list_item_row,courts);
 		ListView lv = (ListView) view.findViewById(R.id.CourtListFragment);
-		lv.setAdapter( adapter);		
+		lv.setAdapter( listAdapter);		
 		
+		String[] parms = { "2014-08-02", "All", "YES", "bhunter" };
+		courts.loadFromServer(listAdapter,parms);
 		// use view.findViewById(id) to set values in the view
 		
 		return view;
+	}
+
+	public RHSCCourtTimeAdapter getListAdapter() {
+		return listAdapter;
 	}
 
 }

@@ -20,6 +20,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.rhsquashclub.arhscbook.view.RHSCCourtTimeAdapter;
+import com.rhsquashclub.arhscbook.view.RHSCSelectCourtTimesTask;
+
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -73,66 +76,11 @@ public class RHSCSelectedCourtTimes extends RHSCCourtTimeList {
 		this.selectedDate = selectedDate;
 	}
 	
-	public RHSCSelectedCourtTimes loadFromServer(RHSCServer srvr) {
+	public void loadFromServer(RHSCCourtTimeAdapter adapter, String[] parms) {
 		// now start the background task
-		GetSelectedCourtTimesTask bgTask = new GetSelectedCourtTimesTask();
-		RHSCSelectedCourtTimes[] parms = { this };
+		RHSCSelectCourtTimesTask bgTask = new RHSCSelectCourtTimesTask(this,adapter);
+//		String[] parms = { "2014-08-02", "All", "YES", "bhunter" };
 		bgTask.execute(parms);
-		return this;
-	}
-	
-	public URI getRequestURL() {
-		String myURL = "http://".concat(RHSCServer.get().getURL());
-		myURL = myURL.concat("/Reserve/IOSTimesJSON.php?");
-		myURL = myURL.concat("scheddate=2014-08-01");
-		myURL = myURL.concat("&courttype=All");
-		myURL = myURL.concat("&include=YES");
-		myURL = myURL.concat("&uid=bhunter");
-		try {
-			URI targetURI = new URI(myURL);
-			return targetURI;
-		} catch (URISyntaxException e) {
-			Log.e("UIR Syntax Exception",e.toString());
-			return null;
-		}
-	}
-
-	private class GetSelectedCourtTimesTask extends AsyncTask<RHSCSelectedCourtTimes,Void,Void> {
-        @Override
-        protected Void doInBackground(RHSCSelectedCourtTimes... myList) {
-        		RHSCSelectedCourtTimes targetObj = myList[0];
-                StringBuilder builder = new StringBuilder();
-                HttpClient client = new DefaultHttpClient();
-                HttpGet httpGet = new HttpGet(targetObj.getRequestURL());
-                
-                try {
-                        HttpResponse response = client.execute(httpGet);
-                        StatusLine statusLine = response.getStatusLine();
-                        int statusCode = statusLine.getStatusCode();
-                        if (statusCode == 200) {
-                                HttpEntity entity = response.getEntity();
-                                InputStream content = entity.getContent();
-                                BufferedReader reader = new BufferedReader(
-                                                new InputStreamReader(content));
-                                String line;
-                                while ((line = reader.readLine()) != null) {
-                                        builder.append(line);
-                                }
-                                Log.v("Getter", "Your data: " + builder.toString()); //response data
-                                targetObj.loadFromJSON(builder.toString());
-                        } else {
-                                Log.e("Getter", "Failed to download file");
-                        }
-                } catch (ClientProtocolException e) {
-                		Log.e("Getter", "ClientProtocolException on ".concat(targetObj.getRequestURL().toString()));
-                        e.printStackTrace();
-                } catch (IOException e) {
-                    	Log.e("Getter", "IOException on ".concat(targetObj.getRequestURL().toString()));
-                        e.printStackTrace();
-                }
-                
-                return null;
-		}
 	}
 	
 	public RHSCSelectedCourtTimes testSampleSelected() {

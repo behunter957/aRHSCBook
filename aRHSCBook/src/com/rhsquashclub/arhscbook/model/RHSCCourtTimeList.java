@@ -17,7 +17,7 @@ public class RHSCCourtTimeList extends ArrayList<RHSCCourtTime> {
 		super();
 	}
 	
-	protected void loadFromJSON(String jsonString) {
+	public void loadFromJSON(String jsonString) {
 		try {
 			JSONObject jObj = new JSONObject(jsonString);
 			JSONArray jArr = jObj.getJSONArray("courtTimes");
