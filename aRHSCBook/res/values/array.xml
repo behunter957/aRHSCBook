@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+   <string-array name="court_selection_array">
+        <item>All courts on</item>
+        <item>Singles courts on</item>
+        <item>Doubles courts on</item>
+        <item>Front courts on</item>
+        <item>Back courts on</item>
+    </string-array>
+</resources>

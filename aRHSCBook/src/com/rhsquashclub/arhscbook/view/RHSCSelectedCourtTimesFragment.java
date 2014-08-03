@@ -6,6 +6,8 @@ import com.rhsquashclub.arhscbook.model.RHSCSelectedCourtTimes;
 import com.rhsquashclub.arhscbook.model.RHSCServer;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,7 +18,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.Switch;
 
 public class RHSCSelectedCourtTimesFragment extends Fragment {
 
@@ -41,7 +48,19 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 		getActivity().setTitle(R.string.courts_title); 
 		
 		courts = RHSCSelectedCourtTimes.get(getActivity());
+
+		Spinner courtSel = (Spinner) view.findViewById(R.id.spinner1);
+		ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getActivity(),
+		        R.array.court_selection_array, R.layout.spinner_item);
+		// Specify the layout to use when the list of choices appears
+//		spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		// Apply the adapter to the spinner
+		courtSel.setAdapter(spinnerAdapter);
 		
+		DatePicker dateSel = (DatePicker) view.findViewById(R.id.datePicker1);
+		
+		Switch includeSel = (Switch) view.findViewById(R.id.switch1);
+
 		listAdapter = 
 				new RHSCCourtTimeAdapter(getActivity(), R.layout.court_times_list_item_row,courts);
 		ListView lv = (ListView) view.findViewById(R.id.CourtListFragment);

@@ -11,5 +11,6 @@
     <string name="courts_title">Courts</string>
     <string name="bookings_title">My Bookings</string>
     <string name="members_title">Member List</string>
+    <string name="court_select_button">All courts for</string>
     
 </resources>
