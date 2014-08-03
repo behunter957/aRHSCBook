@@ -13,9 +13,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class RHSCMemberListFragment extends Fragment {
 	
@@ -39,7 +41,7 @@ public class RHSCMemberListFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle b) {
-		Log.i("RHSCMemberListFragment:onCreateView","entry");
+//		Log.i("RHSCMemberListFragment:onCreateView","entry");
 		View view = inflater.inflate(R.layout.fragment_memberlist, container, false);
 
 		getActivity().setTitle(R.string.members_title); 
@@ -50,6 +52,18 @@ public class RHSCMemberListFragment extends Fragment {
 				new RHSCMemberAdapter(getActivity(), R.layout.member_list_item_row, members); 
 		ListView lv = (ListView) view.findViewById(R.id.member_list_view);
 		lv.setAdapter( adapter);
+		lv.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Log.d("Member List",
+						String.format("item %d clicked", position));
+				// Intent intent = new Intent(context, SendMessage.class);
+				// String message = "abc";
+				// intent.putExtra(EXTRA_MESSAGE, message);
+				// startActivity(intent);
+			}
+		});		
 		
 		members.loadFromServer(adapter);
 

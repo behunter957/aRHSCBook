@@ -26,8 +26,7 @@ public class RHSCMain extends ActionBarActivity {
 		setContentView(R.layout.activity_rhscmain);
 
 		RHSCSelectedCourtTimes.get(this.getApplicationContext());
-
-		RHSCMyBookings.get(this.getApplicationContext()).testSampleSelected();
+		RHSCMyBookings.get(this.getApplicationContext());
 		RHSCMemberList.get(this.getApplicationContext());
 
 		// show courts view by default

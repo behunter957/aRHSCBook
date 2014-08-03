@@ -54,6 +54,7 @@ public class RHSCMemberList extends ArrayList<RHSCMember> {
 	}
 
 	public RHSCMemberList loadFromJSON(String jsonString) {
+		this.clear();
 		try {
 			JSONObject jObj = new JSONObject(jsonString);
 			JSONArray jArr = jObj.getJSONArray("members");

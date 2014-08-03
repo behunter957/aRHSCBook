@@ -15,25 +15,26 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import com.rhsquashclub.arhscbook.model.RHSCMyBookings;
 import com.rhsquashclub.arhscbook.model.RHSCSelectedCourtTimes;
 import com.rhsquashclub.arhscbook.model.RHSCServer;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class RHSCSelectCourtTimesTask extends AsyncTask<String, Void, String> {
+public class RHSCMyBookingsTask extends AsyncTask<String, Void, String> {
 	
-	private RHSCCourtTimeAdapter adapter;
-	private RHSCSelectedCourtTimes courts;
+	private RHSCMyBookingsAdapter adapter;
+	private RHSCMyBookings bookings;
 	
-	public RHSCSelectCourtTimesTask(RHSCSelectedCourtTimes courts, RHSCCourtTimeAdapter adapter) {
+	public RHSCMyBookingsTask(RHSCMyBookings bookings, RHSCMyBookingsAdapter adapter) {
 		this.adapter = adapter;
-		this.courts = courts;
+		this.bookings = bookings;
 	}
 
-	public URI getRequestURI(String scheddate,String courttype,String include,String uid) {
-		String myURL = String.format("http://%s/Reserve/IOSTimesJSON.php?scheddate=%s&courttype=%s&include=%s&uid=%s",
-				RHSCServer.get().getURL(), scheddate, courttype, include, uid);
+	public URI getRequestURI(String uid) {
+		String myURL = String.format("http://%s/Reserve/IOSMyBookingsJSON.php?uid=%s",
+				RHSCServer.get().getURL(), uid);
 		try {
 			URI targetURI = new URI(myURL);
 			return targetURI;
@@ -50,7 +51,7 @@ public class RHSCSelectCourtTimesTask extends AsyncTask<String, Void, String> {
     	// parm 3 is include (YES/NO)
     	// parm 4 is uid
 //		Log.i("RHSCSelectedCourtTimesTask","doInBackground");
-    	URI targetURI = getRequestURI(parms[0],parms[1],parms[2],parms[3]);
+    	URI targetURI = getRequestURI(parms[0]);
         StringBuilder builder = new StringBuilder();
         HttpClient client = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet(targetURI);
@@ -86,9 +87,9 @@ public class RHSCSelectCourtTimesTask extends AsyncTask<String, Void, String> {
     
     @Override
     protected void onPostExecute(String result) {
-//		Log.i("RHSCSelectedCourtTimesTask:postExecute",result);
+//		Log.i("RHSCMyBookingsTask:postExecute",result);
     	if (result != null) {
-            this.courts.loadFromJSON(result,"courtTimes");
+            this.bookings.loadFromJSON(result,"bookings");
             this.adapter.notifyDataSetChanged();
     	}
     }

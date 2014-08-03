@@ -17,6 +17,11 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import com.rhsquashclub.arhscbook.view.RHSCCourtTimeAdapter;
+import com.rhsquashclub.arhscbook.view.RHSCMyBookingsAdapter;
+import com.rhsquashclub.arhscbook.view.RHSCMyBookingsTask;
+import com.rhsquashclub.arhscbook.view.RHSCSelectCourtTimesTask;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -42,35 +47,11 @@ public class RHSCMyBookings extends RHSCCourtTimeList {
 		
 	}
 
-	public String getMyBookings() {
-		StringBuilder builder = new StringBuilder();
-		HttpClient client = new DefaultHttpClient();
-		HttpGet httpGet = new HttpGet(RHSCServer.get().getURL()
-				.concat("/Reserve/IOSMyBookingsJSON.php?uid=")
-				.concat(RHSCUser.get().getName()));
-		try {
-			HttpResponse response = client.execute(httpGet);
-			StatusLine statusLine = response.getStatusLine();
-			int statusCode = statusLine.getStatusCode();
-			if (statusCode == 200) {
-				HttpEntity entity = response.getEntity();
-				InputStream content = entity.getContent();
-				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(content));
-				String line;
-				while ((line = reader.readLine()) != null) {
-					builder.append(line);
-				}
-			} else {
-				Log.e(RHSCMyBookings.class.toString(),
-						"Failed to download file");
-			}
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return builder.toString();
+	public void loadFromServer(RHSCMyBookingsAdapter adapter, String[] parms) {
+		// now start the background task
+//		Log.i("RHSCMyBookings","loadFromserver");
+		RHSCMyBookingsTask bgTask = new RHSCMyBookingsTask(this,adapter);
+		bgTask.execute(parms);
 	}
 	
 	public RHSCMyBookings testSampleSelected() {

@@ -76,7 +76,7 @@ public class RHSCCourtTime {
 				this.courtTime = new Date();
 			}
 			this.status = jObj.has("courtStatus")?jObj.getString("courtStatus"):"";
-			this.event = jObj.has("eventDesc")?jObj.getString("eventDesc"):"";
+			this.event = jObj.has("courtEvent")?jObj.getString("courtEvent"):"";
 			this.player_id = new String[4];
 			this.player_id[0] = jObj.has("player1_id")?jObj.getString("player1_id"):"";
 			this.player_id[1] = jObj.has("player2_id")?jObj.getString("player2_id"):"";

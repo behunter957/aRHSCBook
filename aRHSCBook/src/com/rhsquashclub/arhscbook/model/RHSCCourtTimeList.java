@@ -17,10 +17,11 @@ public class RHSCCourtTimeList extends ArrayList<RHSCCourtTime> {
 		super();
 	}
 	
-	public void loadFromJSON(String jsonString) {
+	public void loadFromJSON(String jsonString,String key) {
+		this.clear();
 		try {
 			JSONObject jObj = new JSONObject(jsonString);
-			JSONArray jArr = jObj.getJSONArray("courtTimes");
+			JSONArray jArr = jObj.getJSONArray(key);
 			for (int i = 0; i < jArr.length(); i++) {
 				this.add(new RHSCCourtTime(jArr.getJSONObject(i)));
 			}
