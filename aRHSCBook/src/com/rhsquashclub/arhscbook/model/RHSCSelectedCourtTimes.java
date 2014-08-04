@@ -76,9 +76,9 @@ public class RHSCSelectedCourtTimes extends RHSCCourtTimeList {
 		this.selectedDate = selectedDate;
 	}
 	
-	public void loadFromServer(RHSCCourtTimeAdapter adapter, String[] parms) {
+	public void loadFromServer(String fromLoc,RHSCCourtTimeAdapter adapter, String[] parms) {
 		// now start the background task
-		Log.i("RHSCSelectedCourtTimes","loadFromserver");
+		Log.i("RHSCSelectedCourtTimes","loadFromserver(".concat(fromLoc).concat("):").concat(parms[0]).concat(":").concat(parms[1]).concat(":").concat(parms[2]).concat(":").concat(parms[3]));
 		
 		RHSCSelectCourtTimesTask bgTask = new RHSCSelectCourtTimesTask(this,adapter);
 //		String[] parms = { "2014-08-02", "All", "YES", "bhunter" };
