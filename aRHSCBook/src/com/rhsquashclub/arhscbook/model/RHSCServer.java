@@ -2,6 +2,8 @@ package com.rhsquashclub.arhscbook.model;
 
 import java.util.Date;
 
+import android.content.Context;
+
 public class RHSCServer {
 	
 	public String getURL() {
@@ -18,7 +20,7 @@ public class RHSCServer {
 
 	public static RHSCServer get() {
 		if (server == null) {
-			server = new RHSCServer("www.bhsquashclub.com");
+			server = new RHSCServer(RHSCPreferences.get().getServerName());
 		}
 		return server;
 	}

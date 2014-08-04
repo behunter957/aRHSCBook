@@ -1,7 +1,13 @@
 package com.rhsquashclub.arhscbook.view;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Date;
+
 import com.rhsquashclub.arhscbook.R;
+import com.rhsquashclub.arhscbook.model.RHSCCourtSelection;
 import com.rhsquashclub.arhscbook.model.RHSCCourtTime;
+import com.rhsquashclub.arhscbook.model.RHSCPreferences;
 import com.rhsquashclub.arhscbook.model.RHSCSelectedCourtTimes;
 import com.rhsquashclub.arhscbook.model.RHSCServer;
 
@@ -19,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -28,6 +35,7 @@ import android.widget.Switch;
 public class RHSCSelectedCourtTimesFragment extends Fragment {
 
 	private RHSCSelectedCourtTimes courts;
+	private Calendar selectedDate;
 	
 	private RHSCCourtTimeAdapter listAdapter;
 
@@ -48,6 +56,7 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 		getActivity().setTitle(R.string.courts_title); 
 		
 		courts = RHSCSelectedCourtTimes.get(getActivity());
+		selectedDate = Calendar.getInstance();
 
 		Spinner courtSel = (Spinner) view.findViewById(R.id.spinner1);
 		ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getActivity(),
@@ -56,11 +65,67 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 //		spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// Apply the adapter to the spinner
 		courtSel.setAdapter(spinnerAdapter);
+		courtSel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+		    @Override
+		    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+		        // your code here
+		    	RHSCPreferences.get().setCourtSelection(RHSCCourtSelection.find(position));
+		    	// notify listview to refresh
+		    	Calendar sd = RHSCSelectedCourtTimesFragment.this.selectedDate;
+				String[] parms = { String.format("%d-%02d=%02d",sd.get(Calendar.YEAR) ,sd.get(Calendar.MONTH)+1,sd.get(Calendar.DAY_OF_MONTH)), 
+						RHSCPreferences.get().getCourtSelection().getText(), 
+						RHSCPreferences.get().isIncludeBookings()?"YES":"NO", 
+						RHSCPreferences.get().getUserid() };
+		    	RHSCSelectedCourtTimesFragment.this.courts.loadFromServer("spinner",RHSCSelectedCourtTimesFragment.this.listAdapter, parms);
+		    }
+
+		    @Override
+		    public void onNothingSelected(AdapterView<?> parentView) {
+		        // your code here
+		    }
+
+		});
 		
 		DatePicker dateSel = (DatePicker) view.findViewById(R.id.datePicker1);
-		
-		Switch includeSel = (Switch) view.findViewById(R.id.switch1);
+		Calendar cDate = Calendar.getInstance();
+	    cDate.set(Calendar.MINUTE, 0);
+	    cDate.set(Calendar.SECOND, 0);
+	    cDate.set(Calendar.MILLISECOND, 0);
+	    dateSel.setMinDate(cDate.getTimeInMillis());
+		Calendar tDate = Calendar.getInstance();
+		tDate.add(Calendar.DATE, 30);
+		dateSel.setMaxDate(tDate.getTimeInMillis());
+		dateSel.init(cDate.get(Calendar.YEAR), cDate.get(Calendar.MONTH), cDate.get(Calendar.DAY_OF_MONTH), 
+				new DatePicker.OnDateChangedListener() {
+					
+					@Override
+					public void onDateChanged(DatePicker view, int year, int monthOfYear,
+							int dayOfMonth) {
+						// TODO Auto-generated method stub
+						RHSCSelectedCourtTimesFragment.this.selectedDate = new GregorianCalendar(year,monthOfYear,dayOfMonth,0,0,0);
+						String[] parms = { String.format("%d-%02d=%02d",year,monthOfYear+1,dayOfMonth), 
+								RHSCPreferences.get().getCourtSelection().getText(), 
+								RHSCPreferences.get().isIncludeBookings()?"YES":"NO", 
+								RHSCPreferences.get().getUserid() };
+				    	RHSCSelectedCourtTimesFragment.this.courts.loadFromServer("datePicker",RHSCSelectedCourtTimesFragment.this.listAdapter, parms);
+						
+					}
+				});
 
+		Switch includeSel = (Switch) view.findViewById(R.id.switch1);
+		includeSel.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+		    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+		        // do something, the isChecked will be
+		        // true if the switch is in the On position
+		    	RHSCPreferences.get().setIncludeBookings(isChecked);
+		    	Calendar sd = RHSCSelectedCourtTimesFragment.this.selectedDate;
+				String[] parms = { String.format("%d-%02d=%02d",sd.get(Calendar.YEAR) ,sd.get(Calendar.MONTH)+1,sd.get(Calendar.DAY_OF_MONTH)), 
+						RHSCPreferences.get().getCourtSelection().getText(), 
+						RHSCPreferences.get().isIncludeBookings()?"YES":"NO", 
+						RHSCPreferences.get().getUserid() };
+		    	RHSCSelectedCourtTimesFragment.this.courts.loadFromServer("switch",RHSCSelectedCourtTimesFragment.this.listAdapter, parms);
+		    }
+		});
 		listAdapter = 
 				new RHSCCourtTimeAdapter(getActivity(), R.layout.court_times_list_item_row,courts);
 		ListView lv = (ListView) view.findViewById(R.id.CourtListFragment);
@@ -78,8 +143,12 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 			}
 		});		
 		
-		String[] parms = { "2014-08-06", "All", "YES", "bhunter" };
-		courts.loadFromServer(listAdapter,parms);
+    	Calendar sd = selectedDate;
+		String[] parms = { String.format("%d-%02d=%02d",sd.get(Calendar.YEAR) ,sd.get(Calendar.MONTH)+1,sd.get(Calendar.DAY_OF_MONTH)), 
+				RHSCPreferences.get().getCourtSelection().getText(), 
+				RHSCPreferences.get().isIncludeBookings()?"YES":"NO", 
+				RHSCPreferences.get().getUserid() };
+		courts.loadFromServer("onCreateView",listAdapter,parms);
 		// use view.findViewById(id) to set values in the view
 		
 		return view;

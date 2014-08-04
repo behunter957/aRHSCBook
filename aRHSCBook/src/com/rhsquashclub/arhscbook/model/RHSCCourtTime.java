@@ -54,6 +54,12 @@ public class RHSCCourtTime {
 		return court.concat(" - ").concat(datepart);
 	}
 	
+	public String getCourtAndDateTime() {
+		String datepart = new SimpleDateFormat("EEE, MMM d 'at' h:mm a", 
+				Locale.ENGLISH).format(courtTime);
+		return court.concat(" - ").concat(datepart);
+	}
+	
 	public String getEventAndPlayers() {
 		String res = event.concat(" - ").concat(player_lname[0]).concat(",").concat(player_lname[1]);
 		if (court.equals("Court 5")) {

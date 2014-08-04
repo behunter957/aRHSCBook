@@ -46,7 +46,7 @@ public class RHSCMyBookingsAdapter extends ArrayAdapter<RHSCCourtTime> {
         }
        
         RHSCCourtTime courtTime = data.get(position);
-        holder.courtAndtime.setText(courtTime.getCourtAndTime());
+        holder.courtAndtime.setText(courtTime.getCourtAndDateTime());
         holder.eventAndPlayers.setText(courtTime.getEventAndPlayers());
        
         return row;
