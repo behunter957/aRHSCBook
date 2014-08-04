@@ -1,8 +1,10 @@
 package com.rhsquashclub.arhscbook.view;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Date;
+import java.util.Locale;
 
 import com.rhsquashclub.arhscbook.R;
 import com.rhsquashclub.arhscbook.model.RHSCCourtSelection;
@@ -11,6 +13,9 @@ import com.rhsquashclub.arhscbook.model.RHSCPreferences;
 import com.rhsquashclub.arhscbook.model.RHSCSelectedCourtTimes;
 import com.rhsquashclub.arhscbook.model.RHSCServer;
 
+import android.app.DatePickerDialog;
+import android.app.DatePickerDialog.OnDateSetListener;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -38,6 +43,9 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 	private Calendar selectedDate;
 	
 	private RHSCCourtTimeAdapter listAdapter;
+	private Button dateSel = null;
+
+	private RHSCDatePickerDialog dialog = null;
 
 	public RHSCSelectedCourtTimesFragment() {
 		// TODO Auto-generated constructor stub
@@ -86,32 +94,53 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 
 		});
 		
-		DatePicker dateSel = (DatePicker) view.findViewById(R.id.datePicker1);
-		Calendar cDate = Calendar.getInstance();
-	    cDate.set(Calendar.MINUTE, 0);
-	    cDate.set(Calendar.SECOND, 0);
-	    cDate.set(Calendar.MILLISECOND, 0);
-	    dateSel.setMinDate(cDate.getTimeInMillis());
-		Calendar tDate = Calendar.getInstance();
-		tDate.add(Calendar.DATE, 30);
-		dateSel.setMaxDate(tDate.getTimeInMillis());
-		dateSel.init(cDate.get(Calendar.YEAR), cDate.get(Calendar.MONTH), cDate.get(Calendar.DAY_OF_MONTH), 
-				new DatePicker.OnDateChangedListener() {
-					
-					@Override
-					public void onDateChanged(DatePicker view, int year, int monthOfYear,
-							int dayOfMonth) {
-						// TODO Auto-generated method stub
-						RHSCSelectedCourtTimesFragment.this.selectedDate = new GregorianCalendar(year,monthOfYear,dayOfMonth,0,0,0);
-						String[] parms = { String.format("%d-%02d=%02d",year,monthOfYear+1,dayOfMonth), 
-								RHSCPreferences.get().getCourtSelection().getText(), 
-								RHSCPreferences.get().isIncludeBookings()?"YES":"NO", 
-								RHSCPreferences.get().getUserid() };
-				    	RHSCSelectedCourtTimesFragment.this.courts.loadFromServer("datePicker",RHSCSelectedCourtTimesFragment.this.listAdapter, parms);
-						
-					}
-				});
+		dateSel = (Button) view.findViewById(R.id.dateButton1);
+		String buttonText = new SimpleDateFormat(
+				"EEE, MMM d", Locale.ENGLISH)
+				.format(selectedDate.getTime());
+		dateSel.setText(buttonText);
+		dateSel.setOnClickListener(new View.OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Calendar cDate = Calendar.getInstance();
+			    cDate.set(Calendar.MINUTE, 0);
+			    cDate.set(Calendar.SECOND, 0);
+			    cDate.set(Calendar.MILLISECOND, 0);
+				Calendar tDate = Calendar.getInstance();
+				tDate.add(Calendar.DATE, 30);
+				dialog = new RHSCDatePickerDialog(getActivity(), 
+						new OnDateSetListener() {
+
+							@Override
+							public void onDateSet(DatePicker view, int year,
+									int monthOfYear, int dayOfMonth) {
+								// TODO Auto-generated method stub
+								RHSCSelectedCourtTimesFragment.this.selectedDate = new GregorianCalendar(year,monthOfYear,dayOfMonth,0,0,0);
+								String[] parms = { String.format("%d-%02d=%02d",year,monthOfYear+1,dayOfMonth), 
+										RHSCPreferences.get().getCourtSelection().getText(), 
+										RHSCPreferences.get().isIncludeBookings()?"YES":"NO", 
+										RHSCPreferences.get().getUserid() };
+								RHSCSelectedCourtTimesFragment.this.courts
+										.loadFromServer(
+												"datePicker",
+												RHSCSelectedCourtTimesFragment.this.listAdapter,
+												parms);
+								String buttonText = new SimpleDateFormat(
+										"EEE, MMM d", Locale.ENGLISH)
+										.format(RHSCSelectedCourtTimesFragment.this.selectedDate
+												.getTime());
+								RHSCSelectedCourtTimesFragment.this.dateSel
+										.setText(buttonText);
+							}
+						},
+						RHSCSelectedCourtTimesFragment.this.selectedDate, cDate, tDate);
+				dialog.show();
+			}
+			
+		});
+		
 		Switch includeSel = (Switch) view.findViewById(R.id.switch1);
 		includeSel.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 		    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -126,6 +155,8 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 		    	RHSCSelectedCourtTimesFragment.this.courts.loadFromServer("switch",RHSCSelectedCourtTimesFragment.this.listAdapter, parms);
 		    }
 		});
+		includeSel.setChecked(RHSCPreferences.get().isIncludeBookings());
+		
 		listAdapter = 
 				new RHSCCourtTimeAdapter(getActivity(), R.layout.court_times_list_item_row,courts);
 		ListView lv = (ListView) view.findViewById(R.id.CourtListFragment);
