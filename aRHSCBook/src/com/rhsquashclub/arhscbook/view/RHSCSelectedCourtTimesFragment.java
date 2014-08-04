@@ -112,7 +112,6 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 					}
 				});
 
-
 		Switch includeSel = (Switch) view.findViewById(R.id.switch1);
 		includeSel.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 		    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
