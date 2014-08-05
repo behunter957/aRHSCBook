@@ -1,10 +1,24 @@
 package com.rhsquashclub.arhscbook.view;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Date;
 import java.util.Locale;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import com.rhsquashclub.arhscbook.R;
 import com.rhsquashclub.arhscbook.model.RHSCCourtSelection;
@@ -19,6 +33,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -84,7 +99,8 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 						RHSCPreferences.get().getCourtSelection().getText(), 
 						RHSCPreferences.get().isIncludeBookings()?"YES":"NO", 
 						RHSCPreferences.get().getUserid() };
-		    	RHSCSelectedCourtTimesFragment.this.courts.loadFromServer("spinner",RHSCSelectedCourtTimesFragment.this.listAdapter, parms);
+				RHSCSelectCourtTimesTask bgTask = new RHSCSelectCourtTimesTask();
+				bgTask.execute(parms);
 		    }
 
 		    @Override
@@ -122,11 +138,8 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 										RHSCPreferences.get().getCourtSelection().getText(), 
 										RHSCPreferences.get().isIncludeBookings()?"YES":"NO", 
 										RHSCPreferences.get().getUserid() };
-								RHSCSelectedCourtTimesFragment.this.courts
-										.loadFromServer(
-												"datePicker",
-												RHSCSelectedCourtTimesFragment.this.listAdapter,
-												parms);
+								RHSCSelectCourtTimesTask bgTask = new RHSCSelectCourtTimesTask();
+								bgTask.execute(parms);
 								String buttonText = new SimpleDateFormat(
 										"EEE, MMM d", Locale.ENGLISH)
 										.format(RHSCSelectedCourtTimesFragment.this.selectedDate
@@ -152,7 +165,8 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 						RHSCPreferences.get().getCourtSelection().getText(), 
 						RHSCPreferences.get().isIncludeBookings()?"YES":"NO", 
 						RHSCPreferences.get().getUserid() };
-		    	RHSCSelectedCourtTimesFragment.this.courts.loadFromServer("switch",RHSCSelectedCourtTimesFragment.this.listAdapter, parms);
+				RHSCSelectCourtTimesTask bgTask = new RHSCSelectCourtTimesTask();
+				bgTask.execute(parms);
 		    }
 		});
 		includeSel.setChecked(RHSCPreferences.get().isIncludeBookings());
@@ -179,7 +193,8 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 				RHSCPreferences.get().getCourtSelection().getText(), 
 				RHSCPreferences.get().isIncludeBookings()?"YES":"NO", 
 				RHSCPreferences.get().getUserid() };
-		courts.loadFromServer("onCreateView",listAdapter,parms);
+		RHSCSelectCourtTimesTask bgTask = new RHSCSelectCourtTimesTask();
+		bgTask.execute(parms);
 		// use view.findViewById(id) to set values in the view
 		
 		return view;
@@ -188,5 +203,72 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 	public RHSCCourtTimeAdapter getListAdapter() {
 		return listAdapter;
 	}
+	
+	private class RHSCSelectCourtTimesTask extends AsyncTask<String, Void, String> {
+		
+		public URI getRequestURI(String scheddate,String courttype,String include,String uid) {
+			String myURL = String.format("http://%s/Reserve/IOSTimesJSON.php?scheddate=%s&courttype=%s&include=%s&uid=%s",
+					RHSCServer.get().getURL(), scheddate, courttype, include, uid);
+			try {
+				URI targetURI = new URI(myURL);
+				return targetURI;
+			} catch (URISyntaxException e) {
+				Log.e("URI Syntax Exception",e.toString());
+				return null;
+			}
+		}
+		
+	    @Override
+	    protected String doInBackground(String... parms) {
+	    	// parm 1 is scheddate
+	    	// parm 2 is courttype
+	    	// parm 3 is include (YES/NO)
+	    	// parm 4 is uid
+//			Log.i("RHSCSelectedCourtTimesTask","doInBackground");
+	    	URI targetURI = getRequestURI(parms[0],parms[1],parms[2],parms[3]);
+	        StringBuilder builder = new StringBuilder();
+	        HttpClient client = new DefaultHttpClient();
+	        HttpGet httpGet = new HttpGet(targetURI);
+	        try {
+	                HttpResponse response = client.execute(httpGet);
+//	        		Log.i("RHSCSelectedCourtTimesTask","returned from execute");
+	                StatusLine statusLine = response.getStatusLine();
+	                int statusCode = statusLine.getStatusCode();
+	                if (statusCode == 200) {
+	                        HttpEntity entity = response.getEntity();
+	                        InputStream content = entity.getContent();
+	                        BufferedReader reader = new BufferedReader(
+	                                        new InputStreamReader(content));
+	                        String line;
+	                        while ((line = reader.readLine()) != null) {
+	                                builder.append(line);
+	                        }
+//	                        Log.v("Getter", "Your data: " + builder.toString()); //response data
+	                        return builder.toString();
+	                } else {
+	                        Log.e("Getter", "Failed to download file");
+	                }
+	        } catch (ClientProtocolException e) {
+	        		Log.e("Getter", "ClientProtocolException on ".concat(targetURI.toString()));
+	                e.printStackTrace();
+	        } catch (IOException e) {
+	            	Log.e("Getter", "IOException on ".concat(targetURI.toString()));
+	                e.printStackTrace();
+	        }
+	        
+	    	return null;
+	    }
+	    
+	    @Override
+	    protected void onPostExecute(String result) {
+//			Log.i("RHSCSelectedCourtTimesTask:postExecute",result);
+	    	if (result != null) {
+	    		courts.loadFromJSON(result,"courtTimes");
+	            listAdapter.notifyDataSetChanged();
+	    	}
+	    }
+
+	}
+
 
 }

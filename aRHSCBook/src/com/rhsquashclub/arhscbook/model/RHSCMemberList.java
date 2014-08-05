@@ -11,9 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.rhsquashclub.arhscbook.view.RHSCCourtTimeAdapter;
-import com.rhsquashclub.arhscbook.view.RHSCGetMemberListTask;
 import com.rhsquashclub.arhscbook.view.RHSCMemberAdapter;
-import com.rhsquashclub.arhscbook.view.RHSCSelectCourtTimesTask;
 
 import android.content.Context;
 import android.util.Log;
@@ -66,12 +64,6 @@ public class RHSCMemberList extends ArrayList<RHSCMember> {
 		return this;
 	}
 
-	public void loadFromServer(RHSCMemberAdapter adapter) {
-		RHSCGetMemberListTask bgTask = new RHSCGetMemberListTask(this,adapter);
-		Void[] parms = {};
-		bgTask.execute(parms);
-	}
-	
 	public RHSCMemberList testSampleSelected() {
 		this.clear();
 		String[] mems = {"Bruce Hunter","Tony Harris","Danny Paolucci"};

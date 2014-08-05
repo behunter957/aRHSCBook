@@ -19,8 +19,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import com.rhsquashclub.arhscbook.view.RHSCCourtTimeAdapter;
 import com.rhsquashclub.arhscbook.view.RHSCMyBookingsAdapter;
-import com.rhsquashclub.arhscbook.view.RHSCMyBookingsTask;
-import com.rhsquashclub.arhscbook.view.RHSCSelectCourtTimesTask;
 
 import android.content.Context;
 import android.util.Log;
@@ -47,13 +45,13 @@ public class RHSCMyBookings extends RHSCCourtTimeList {
 		
 	}
 
-	public void loadFromServer(RHSCMyBookingsAdapter adapter, String[] parms) {
-		// now start the background task
-//		Log.i("RHSCMyBookings","loadFromserver");
-		RHSCMyBookingsTask bgTask = new RHSCMyBookingsTask(this,adapter);
-		bgTask.execute(parms);
-	}
-	
+//	public void loadFromServer(RHSCMyBookingsAdapter adapter, String[] parms) {
+//		// now start the background task
+////		Log.i("RHSCMyBookings","loadFromserver");
+//		RHSCMyBookingsTask bgTask = new RHSCMyBookingsTask(this,adapter);
+//		bgTask.execute(parms);
+//	}
+//	
 	public RHSCMyBookings testSampleSelected() {
 		this.clear();
 		String[] courts = {"Court 1","Court 2"};
