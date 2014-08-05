@@ -20,6 +20,9 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.rhsquashclub.arhscbook.BookSinglesActivity;
 import com.rhsquashclub.arhscbook.R;
 import com.rhsquashclub.arhscbook.model.RHSCCourtSelection;
 import com.rhsquashclub.arhscbook.model.RHSCCourtTime;
@@ -61,6 +64,8 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 	private Button dateSel = null;
 
 	private RHSCDatePickerDialog dialog = null;
+	
+	static final int BOOK_SINGLES_COURT = 1;
 
 	public RHSCSelectedCourtTimesFragment() {
 		// TODO Auto-generated constructor stub
@@ -181,10 +186,21 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 					int position, long id) {
 				Log.d("SelectedCourtTimes",
 						String.format("item %d clicked", position));
-				// Intent intent = new Intent(context, SendMessage.class);
-				// String message = "abc";
-				// intent.putExtra(EXTRA_MESSAGE, message);
-				// startActivity(intent);
+				if (courts.get(position).getStatus().equals("Available")) {
+					if (courts.get(position).getCourt().equals("Court 5")) {
+
+					} else {
+						Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+						Log.i("GSON Court Time",gson.toJson(courts.get(position)));
+
+						Intent intent = new Intent(getActivity(),
+								BookSinglesActivity.class);
+						intent.putExtra("court", gson.toJson(courts.get(position)));
+						startActivityForResult(intent,BOOK_SINGLES_COURT);
+					}
+				} else {
+					// not available - cancel?
+				}
 			}
 		});		
 		
@@ -198,6 +214,19 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 		// use view.findViewById(id) to set values in the view
 		
 		return view;
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    // Check which request we're responding to
+	    if (requestCode == BOOK_SINGLES_COURT) {
+	        // Make sure the request was successful
+	        if (resultCode == android.app.Activity.RESULT_OK) {
+	        	Gson gson = new Gson();
+	        	RHSCCourtTime res = gson.fromJson(data.getExtras().getString("court"), RHSCCourtTime.class);
+	        	Log.i("return from book singles",res.getEvent());
+	        }
+	    }
 	}
 
 	public RHSCCourtTimeAdapter getListAdapter() {

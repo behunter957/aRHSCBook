@@ -1,5 +1,6 @@
 package com.rhsquashclub.arhscbook.model;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,18 +9,55 @@ import java.util.Locale;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.gson.annotations.Expose;
+
 import android.util.Log;
 
-public class RHSCCourtTime {
+public class RHSCCourtTime implements Serializable {
 	
+	@Expose
 	private String bookingId;
+	@Expose
 	private String court;
+	@Expose
 	private Date courtTime;
+	@Expose
 	private String status;
+	@Expose
 	private String event;
+	@Expose
 	private String[] player_id;
+	@Expose
 	private String[] player_lname;
 	
+	public void setBookingId(String bookingId) {
+		this.bookingId = bookingId;
+	}
+
+	public void setCourt(String court) {
+		this.court = court;
+	}
+
+	public void setCourtTime(Date courtTime) {
+		this.courtTime = courtTime;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public void setEvent(String event) {
+		this.event = event;
+	}
+
+	public void setPlayer_id(String[] player_id) {
+		this.player_id = player_id;
+	}
+
+	public void setPlayer_lname(String[] player_lname) {
+		this.player_lname = player_lname;
+	}
+
 	public String getBookingId() {
 		return bookingId;
 	}
@@ -96,13 +134,20 @@ public class RHSCCourtTime {
 		} catch (JSONException je) {
 		}
 	}
-
-	public String toString() {
-		String res = this.court.concat(" - ").concat(new SimpleDateFormat("MMMM d, yyyy h:mm a", 
-				Locale.ENGLISH).format(this.courtTime));
-		return res;
-	}
 	
+	@Override
+	public String toString() {
+		String result = null;
+		
+		return result;
+	}
+
+//	public String toString() {
+//		String res = this.court.concat(" - ").concat(new SimpleDateFormat("MMMM d, yyyy h:mm a", 
+//				Locale.ENGLISH).format(this.courtTime));
+//		return res;
+//	}
+//	
 	public RHSCCourtTime(String bookingId,String court,String dateMMMMdyyyy,String timehmma) {
 		this.bookingId = bookingId;
 		this.court = court;
