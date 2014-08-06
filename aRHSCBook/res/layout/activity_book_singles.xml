@@ -49,26 +49,26 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <RadioGroup
-            android:id="@+id/radioGroup1"
+            android:id="@+id/player2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" 
             android:gravity="center"
             android:orientation="horizontal">
 
         <RadioButton
-            android:id="@+id/radioButton1"
+            android:id="@+id/tbd2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TBD" />
 
         <RadioButton
-            android:id="@+id/radioButton2"
+            android:id="@+id/guest2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Guest" />
 
         <RadioButton
-            android:id="@+id/radioButton3"
+            android:id="@+id/member2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="" />

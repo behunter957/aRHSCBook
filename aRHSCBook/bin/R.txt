@@ -275,6 +275,7 @@ int id eventAndPlayers 0x7f050052
 int id expand_activities_button 0x7f050026
 int id expanded_menu 0x7f05002c
 int id fullName 0x7f05005a
+int id guest2 0x7f050042
 int id home 0x7f050014
 int id homeAsUp 0x7f050005
 int id icon 0x7f05002a
@@ -284,11 +285,13 @@ int id inputSearch 0x7f050054
 int id inputSearch2 0x7f050049
 int id listMode 0x7f050001
 int id list_item 0x7f050029
+int id member2 0x7f050043
 int id member_list_view 0x7f050055
 int id middle 0x7f050012
 int id never 0x7f050009
 int id none 0x7f050010
 int id normal 0x7f050000
+int id player2 0x7f050040
 int id player_list_view 0x7f05004a
 int id progress_circular 0x7f050018
 int id progress_horizontal 0x7f050019
@@ -296,10 +299,6 @@ int id rad_bookings 0x7f05004f
 int id rad_courts 0x7f05004e
 int id rad_members 0x7f050050
 int id radio 0x7f05002f
-int id radioButton1 0x7f050041
-int id radioButton2 0x7f050042
-int id radioButton3 0x7f050043
-int id radioGroup1 0x7f050040
 int id search_badge 0x7f050032
 int id search_bar 0x7f050031
 int id search_button 0x7f050033
@@ -321,6 +320,7 @@ int id submit_area 0x7f050039
 int id switch1 0x7f050058
 int id tabMode 0x7f050002
 int id tabbar 0x7f05004d
+int id tbd2 0x7f050041
 int id textView1 0x7f05003c
 int id textView2 0x7f05003d
 int id textView3 0x7f05003e

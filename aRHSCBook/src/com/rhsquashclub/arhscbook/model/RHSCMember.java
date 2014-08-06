@@ -3,16 +3,58 @@ package com.rhsquashclub.arhscbook.model;
 import org.json.JSONObject;
 import org.json.JSONException;
 
+import com.google.gson.annotations.Expose;
+
 public class RHSCMember {
 	
+	@Expose
 	protected String name;
+	@Expose
 	protected String lastName;
+	@Expose
 	protected String firstName;
+	@Expose
 	protected String status;
+	@Expose
 	protected String type;
+	@Expose
 	protected String email;
+	@Expose
 	protected String phone1;
+	@Expose
 	protected String phone2;
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setPhone1(String phone1) {
+		this.phone1 = phone1;
+	}
+
+	public void setPhone2(String phone2) {
+		this.phone2 = phone2;
+	}
 
 	public String getName() {
 		return name;

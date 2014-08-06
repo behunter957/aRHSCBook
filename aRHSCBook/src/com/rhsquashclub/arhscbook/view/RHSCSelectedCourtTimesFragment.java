@@ -222,9 +222,12 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 	    if (requestCode == BOOK_SINGLES_COURT) {
 	        // Make sure the request was successful
 	        if (resultCode == android.app.Activity.RESULT_OK) {
-	        	Gson gson = new Gson();
-	        	RHSCCourtTime res = gson.fromJson(data.getExtras().getString("court"), RHSCCourtTime.class);
-	        	Log.i("return from book singles",res.getEvent());
+//	        	Gson gson = new Gson();
+//	        	RHSCCourtTime res = gson.fromJson(data.getExtras().getString("court"), RHSCCourtTime.class);
+	        	Log.i("return from book singles","Booked");
+	        }
+	        if (resultCode == android.app.Activity.RESULT_CANCELED) {
+	        	Log.i("return from book singles",data.getExtras().getString("reason"));
 	        }
 	    }
 	}
