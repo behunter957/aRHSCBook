@@ -1,5 +1,8 @@
 package com.rhsquashclub.arhscbook;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import com.google.gson.Gson;
 import com.rhsquashclub.arhscbook.model.RHSCCourtTime;
 import com.rhsquashclub.arhscbook.model.RHSCMember;
@@ -15,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 public class BookSinglesActivity extends Activity {
 	
@@ -32,6 +36,13 @@ public class BookSinglesActivity extends Activity {
 		Gson gson = new Gson();
 		testCourt = gson.fromJson(jsonCourt, RHSCCourtTime.class);
 //		testCourt.setEvent("Psych!");
+		
+		String ctdText = String.format("%s on %s", testCourt.getCourt(),new SimpleDateFormat(
+				"EEEE, MMMM d", Locale.ENGLISH)
+				.format(testCourt.getCourtTime()));
+		TextView courtDesc = (TextView) findViewById(R.id.courtTimeDesc);
+		courtDesc.setText(ctdText);
+		
 		Log.i("BookSinglesActivity received",jsonCourt);
 		Button bookButton = (Button) findViewById(R.id.bookButton);
 		bookButton.setOnClickListener(new View.OnClickListener() {

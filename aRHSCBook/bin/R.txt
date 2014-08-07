@@ -263,6 +263,7 @@ int id cancelPickMember 0x7f05004a
 int id checkbox 0x7f05002d
 int id collapseActionView 0x7f05000d
 int id courtAndTime 0x7f050050
+int id courtTimeDesc 0x7f05003c
 int id customSpinnerItemTextView 0x7f05005a
 int id dateButton1 0x7f050056
 int id default_activity_button 0x7f050028
@@ -321,7 +322,6 @@ int id switch1 0x7f050057
 int id tabMode 0x7f050002
 int id tabbar 0x7f05004c
 int id tbd2 0x7f050041
-int id textView1 0x7f05003c
 int id textView2 0x7f05003d
 int id textView3 0x7f05003e
 int id textView4 0x7f05003f

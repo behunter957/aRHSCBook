@@ -44,7 +44,7 @@ public class PickPlayerActivity extends Activity {
 				Log.d("PickPlayer", String.format("item %d clicked", position));
 				Intent returnIntent = new Intent();
 				Gson gson = new Gson();
-				returnIntent.putExtra("player", gson.toJson(members.get(position)));
+				returnIntent.putExtra("player", gson.toJson(listAdapter.getItem(position)));
 				setResult(RESULT_OK,returnIntent);
 				finish();
 			}
