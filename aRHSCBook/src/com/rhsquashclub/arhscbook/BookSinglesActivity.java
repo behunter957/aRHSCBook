@@ -77,8 +77,9 @@ public class BookSinglesActivity extends Activity {
                     break;
                 case R.id.member2:
                     // TODO Something
+                	Log.i("BookSinglesActivity","button for member clicked");
 					Intent intent = new Intent(getApplicationContext(),
-							BookSinglesActivity.class);
+							PickPlayerActivity.class);
 					startActivityForResult(intent,SELECT_PLAYER2);
                     break;
                 }
