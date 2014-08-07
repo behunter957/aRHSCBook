@@ -68,6 +68,10 @@ public class RHSCMember {
 		return firstName;
 	}
 	
+	public String getDisplayName() {
+		return firstName.concat(" ").concat(lastName);
+	}
+
 	public String getSortName() {
 		return lastName.concat(", ").concat(firstName);
 	}

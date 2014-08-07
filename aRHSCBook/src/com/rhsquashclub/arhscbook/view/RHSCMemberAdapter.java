@@ -40,7 +40,7 @@ public class RHSCMemberAdapter extends ArrayAdapter<RHSCMember> implements Filte
        
         if(row == null)
         {
-            LayoutInflater inflater = ((Activity)context).getLayoutInflater();
+            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
            
             holder = new MemberHolder();

@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 public class BookSinglesActivity extends Activity {
@@ -96,6 +97,8 @@ public class BookSinglesActivity extends Activity {
 	        if (resultCode == android.app.Activity.RESULT_OK) {
 	        	Gson gson = new Gson();
 	        	RHSCMember player = gson.fromJson(data.getExtras().getString("player"), RHSCMember.class);
+	        	RadioButton playerButton = (RadioButton) findViewById(R.id.member2);
+	        	playerButton.setText(player.getDisplayName());
 	        	Log.i("return from select player2",player.getName());
 	        }
 	        if (resultCode == android.app.Activity.RESULT_CANCELED) {

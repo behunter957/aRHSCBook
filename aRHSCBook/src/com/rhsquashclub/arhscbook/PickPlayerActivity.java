@@ -5,16 +5,20 @@ import com.google.gson.GsonBuilder;
 import com.rhsquashclub.arhscbook.model.RHSCMemberList;
 import com.rhsquashclub.arhscbook.view.RHSCCourtTimeAdapter;
 import com.rhsquashclub.arhscbook.view.RHSCMemberAdapter;
+import com.rhsquashclub.arhscbook.view.RHSCMemberListFragment;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -22,6 +26,7 @@ public class PickPlayerActivity extends Activity {
 
 	private RHSCMemberAdapter listAdapter;
 	private RHSCMemberList members;
+	private EditText inputSearch;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +34,7 @@ public class PickPlayerActivity extends Activity {
 		setContentView(R.layout.activity_pick_player);
 		members = RHSCMemberList.get(getApplicationContext());
 		listAdapter = 
-				new RHSCMemberAdapter(getApplicationContext(), R.layout.member_list_item_row,members);
+				new RHSCMemberAdapter(this, R.layout.member_list_item_row,members);
 		ListView lv = (ListView) findViewById(R.id.player_list_view);
 		lv.setAdapter( listAdapter);	
 		lv.setOnItemClickListener(new OnItemClickListener() {
@@ -45,6 +50,29 @@ public class PickPlayerActivity extends Activity {
 			}
 		});
 		
+		inputSearch = (EditText) findViewById(R.id.inputSearch2);
+        inputSearch.addTextChangedListener(new TextWatcher() {
+            
+            @Override
+            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                // When user changed the Text
+            	PickPlayerActivity.this.listAdapter.getFilter().filter(cs);  
+            }
+             
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                    int arg3) {
+                // TODO Auto-generated method stub
+                 
+            }
+             
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                // TODO Auto-generated method stub                         
+            }
+        });		
+		
+
 		Button cancelButton = (Button) findViewById(R.id.cancelPickMember);
 		cancelButton.setOnClickListener(new View.OnClickListener() {
 
