@@ -100,6 +100,11 @@ public class RHSCMemberAdapter extends ArrayAdapter<RHSCMember> implements Filte
         return filter;
     }
     
+    @Override
+    public RHSCMember getItem(int position) {
+        return data.get(position);
+    }
+    
     static class MemberHolder
     {
         TextView fullName;
