@@ -30,7 +30,7 @@ public class PickPlayerActivity extends Activity {
 		members = RHSCMemberList.get(getApplicationContext());
 		listAdapter = 
 				new RHSCMemberAdapter(getApplicationContext(), R.layout.member_list_item_row,members);
-		ListView lv = (ListView) findViewById(R.id.CourtListFragment);
+		ListView lv = (ListView) findViewById(R.id.player_list_view);
 		lv.setAdapter( listAdapter);	
 		lv.setOnItemClickListener(new OnItemClickListener() {
 			@Override
