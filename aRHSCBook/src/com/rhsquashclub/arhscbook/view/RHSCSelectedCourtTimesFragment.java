@@ -222,12 +222,17 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 	    if (requestCode == BOOK_SINGLES_COURT) {
 	        // Make sure the request was successful
 	        if (resultCode == android.app.Activity.RESULT_OK) {
-//	        	Gson gson = new Gson();
-//	        	RHSCCourtTime res = gson.fromJson(data.getExtras().getString("court"), RHSCCourtTime.class);
-	        	Log.i("return from book singles","Booked");
+	        	Log.i("return from book singles","court booked");
+		    	Calendar sd = RHSCSelectedCourtTimesFragment.this.selectedDate;
+				String[] parms = { String.format("%d-%02d=%02d",sd.get(Calendar.YEAR) ,sd.get(Calendar.MONTH)+1,sd.get(Calendar.DAY_OF_MONTH)), 
+						RHSCPreferences.get().getCourtSelection().getText(), 
+						RHSCPreferences.get().isIncludeBookings()?"YES":"NO", 
+						RHSCPreferences.get().getUserid() };
+				RHSCSelectCourtTimesTask bgTask = new RHSCSelectCourtTimesTask();
+				bgTask.execute(parms);
 	        }
 	        if (resultCode == android.app.Activity.RESULT_CANCELED) {
-	        	Log.i("return from book singles",data.getExtras().getString("reason"));
+	        	Log.i("return from book singles","court not booked");
 	        }
 	    }
 	}
