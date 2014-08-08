@@ -51,6 +51,7 @@ public class BookSinglesActivity extends Activity {
 	
 	private RHSCCourtTime targetCourt;
 	private ArrayAdapter<CharSequence> spinnerAdapter;
+	boolean can_book = false;
 	
 	static final int SELECT_PLAYER2 = 2;
 	
@@ -64,10 +65,11 @@ public class BookSinglesActivity extends Activity {
 		Gson gson = new Gson();
 		targetCourt = gson.fromJson(jsonCourt, RHSCCourtTime.class);
 
-		// TODO first lock the court
-//		if (!lockCourt(targetCourt.getBookingId(),RHSCUser.get().getName())) {
-//			// return afterdisplaying error messahe
-//		}
+		// first lock the court (will update can_book if successful)
+		String[] parms = { targetCourt.getBookingId(), 
+				RHSCPreferences.get().getUserid() };
+		RHSCLockCourtTimeTask bgTask = new RHSCLockCourtTimeTask();
+		bgTask.execute(parms);
 		// then populate the view
 		String ctdText = String.format("%s on %s", targetCourt.getCourt(),new SimpleDateFormat(
 				"EEEE, MMMM d", Locale.ENGLISH)
@@ -75,7 +77,7 @@ public class BookSinglesActivity extends Activity {
 		TextView courtDesc = (TextView) findViewById(R.id.courtTimeDesc);
 		courtDesc.setText(ctdText);
 		
-		// TODO populate the spinner for event type
+		// populate the spinner for event type
 		Spinner eventSpinner = (Spinner) findViewById(R.id.eventSpinner1);
 		spinnerAdapter = ArrayAdapter.createFromResource(this,
 		        R.array.singles_event_array, R.layout.spinner_item);
@@ -102,13 +104,14 @@ public class BookSinglesActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// first update the booking - http call
-				// then return signal a refresh from server
-				Intent returnIntent = new Intent();
-//				Gson gson = new Gson();
-//				returnIntent.putExtra("court",gson.toJson(testCourt));
-				setResult(RESULT_OK,returnIntent);
-				finish();
+				if (can_book) {
+					// first update the booking - http call
+//					String myURL = String.format("http://%s/Reserve/IOSLockBookingJSON.php?b_id=%s,player1=%s,player2=%s,uid=%s,channel=%s,courtEvent=%s",
+//							RHSCServer.get().getURL(), parms[0], parms[1], parms[2], RHSCPreferences.get().getUserid(),"android", parms[3]);
+					String[] parms = { targetCourt.getBookingId(), targetCourt.getPlayer_id()[0], targetCourt.getPlayer_id()[1],targetCourt.getEvent() };
+					RHSCBookCourtTimeTask bgTask = new RHSCBookCourtTimeTask();
+					bgTask.execute(parms);
+				}
 			}
 		});
 
@@ -275,6 +278,212 @@ public class BookSinglesActivity extends Activity {
 			Log.e("URI Syntax Exception",e.toString());
 		}
 		return;
+	}
+
+	private class RHSCLockCourtTimeTask extends AsyncTask<String, Void, String> {
+		
+		public URI getRequestURI(String booking,String uid) {
+			String myURL = String.format("http://%s/Reserve/IOSLockBookingJSON.php?booking_id=%s&uid=%s",
+						RHSCServer.get().getURL(), booking, uid);
+			try {
+				URI targetURI = new URI(myURL);
+				return targetURI;
+			} catch (URISyntaxException e) {
+				Log.e("URI Syntax Exception",e.toString());
+				return null;
+			}
+		}
+		
+	    @Override
+	    protected String doInBackground(String... parms) {
+	    	// parm 1 is booking
+	    	// parm 2 is uid
+	    	URI targetURI = getRequestURI(parms[0],parms[1]);
+	        StringBuilder builder = new StringBuilder();
+	        HttpClient client = new DefaultHttpClient();
+	        HttpGet httpGet = new HttpGet(targetURI);
+	        try {
+	                HttpResponse response = client.execute(httpGet);
+	                StatusLine statusLine = response.getStatusLine();
+	                int statusCode = statusLine.getStatusCode();
+	                if (statusCode == 200) {
+	                        HttpEntity entity = response.getEntity();
+	                        InputStream content = entity.getContent();
+	                        BufferedReader reader = new BufferedReader(
+	                                        new InputStreamReader(content));
+	                        String line;
+	                        while ((line = reader.readLine()) != null) {
+	                                builder.append(line);
+	                        }
+//	                        Log.v("Getter", "Your data: " + builder.toString()); //response data
+	            			try {
+		            			JSONObject jObj = new JSONObject(builder.toString());
+		            			return jObj.has("result")?"success":"error";
+	            			} catch (JSONException je) {
+	            				return "error";
+	            			}
+	                } else {
+	                        Log.e("Getter", "Failed to download file");
+	                        return "error";
+	                }
+	        } catch (ClientProtocolException e) {
+	        		Log.e("Getter", "ClientProtocolException on ".concat(targetURI.toString()));
+	                e.printStackTrace();
+	                return "error";
+	        } catch (IOException e) {
+	            	Log.e("Getter", "IOException on ".concat(targetURI.toString()));
+	                e.printStackTrace();
+	                return "error";
+	        }
+	    }
+	    
+	    @Override
+	    protected void onPostExecute(String result) {
+	    	if (result != null) {
+	    		if (result.equals("success")) {
+	    			// allow book button
+	    			can_book = true;
+	    			return;
+	    		}
+	    	}
+	    	// show message cant lock and return to parent
+			Intent returnIntent = new Intent();
+			returnIntent.putExtra("reason","could not lock the court"); 
+			setResult(RESULT_CANCELED,returnIntent);
+			finish();
+	    }
+
+	}
+
+	private class RHSCUnlockCourtTimeTask extends AsyncTask<String, Void, Void> {
+		
+		public URI getRequestURI(String booking) {
+			String myURL = String.format("http://%s/Reserve/IOSLockBookingJSON.php?booking_id=%s",
+						RHSCServer.get().getURL(), booking);
+			try {
+				URI targetURI = new URI(myURL);
+				return targetURI;
+			} catch (URISyntaxException e) {
+				Log.e("URI Syntax Exception",e.toString());
+				return null;
+			}
+		}
+		
+	    @Override
+	    protected Void doInBackground(String... parms) {
+	    	// parm 1 is booking
+	    	URI targetURI = getRequestURI(parms[0]);
+	        StringBuilder builder = new StringBuilder();
+	        HttpClient client = new DefaultHttpClient();
+	        HttpGet httpGet = new HttpGet(targetURI);
+	        try {
+	                HttpResponse response = client.execute(httpGet);
+	                StatusLine statusLine = response.getStatusLine();
+	                int statusCode = statusLine.getStatusCode();
+	                if (statusCode == 200) {
+	                        HttpEntity entity = response.getEntity();
+	                        InputStream content = entity.getContent();
+	                        BufferedReader reader = new BufferedReader(
+	                                        new InputStreamReader(content));
+	                        String line;
+	                        while ((line = reader.readLine()) != null) {
+	                                builder.append(line);
+	                        }
+	                } else {
+	                        Log.e("Getter", "Failed to download file");
+	                }
+	        } catch (ClientProtocolException e) {
+	        		Log.e("Getter", "ClientProtocolException on ".concat(targetURI.toString()));
+	                e.printStackTrace();
+	        } catch (IOException e) {
+	            	Log.e("Getter", "IOException on ".concat(targetURI.toString()));
+	                e.printStackTrace();
+	        }
+	        return null;
+	    }
+	    
+	    @Override
+	    protected void onPostExecute(Void result) {
+	    	// show message cant lock and return to parent
+			Intent returnIntent = new Intent();
+			setResult(RESULT_OK,returnIntent);
+			finish();
+	    }
+
+	}
+
+	private class RHSCBookCourtTimeTask extends AsyncTask<String, Void, String> {
+		
+		public URI getRequestURI(String[] parms) {
+			String myURL = String.format("http://%s/Reserve/IOSLockBookingJSON.php?b_id=%s,player1=%s,player2=%s,uid=%s,channel=%s,courtEvent=%s",
+						RHSCServer.get().getURL(), parms[0], parms[1], parms[2], RHSCPreferences.get().getUserid(),"android", parms[3]);
+			try {
+				URI targetURI = new URI(myURL);
+				return targetURI;
+			} catch (URISyntaxException e) {
+				Log.e("URI Syntax Exception",e.toString());
+				return null;
+			}
+		}
+		
+	    @Override
+	    protected String doInBackground(String... parms) {
+	    	URI targetURI = getRequestURI(parms);
+	        StringBuilder builder = new StringBuilder();
+	        HttpClient client = new DefaultHttpClient();
+	        HttpGet httpGet = new HttpGet(targetURI);
+	        try {
+	                HttpResponse response = client.execute(httpGet);
+	                StatusLine statusLine = response.getStatusLine();
+	                int statusCode = statusLine.getStatusCode();
+	                if (statusCode == 200) {
+	                        HttpEntity entity = response.getEntity();
+	                        InputStream content = entity.getContent();
+	                        BufferedReader reader = new BufferedReader(
+	                                        new InputStreamReader(content));
+	                        String line;
+	                        while ((line = reader.readLine()) != null) {
+	                                builder.append(line);
+	                        }
+//	                        Log.v("Getter", "Your data: " + builder.toString()); //response data
+	            			try {
+		            			JSONObject jObj = new JSONObject(builder.toString());
+		            			return jObj.has("result")?"success":"error";
+	            			} catch (JSONException je) {
+	            				return "error";
+	            			}
+	                } else {
+	                        Log.e("Getter", "Failed to download file");
+	                        return "error";
+	                }
+	        } catch (ClientProtocolException e) {
+	        		Log.e("Getter", "ClientProtocolException on ".concat(targetURI.toString()));
+	                e.printStackTrace();
+	                return "error";
+	        } catch (IOException e) {
+	            	Log.e("Getter", "IOException on ".concat(targetURI.toString()));
+	                e.printStackTrace();
+	                return "error";
+	        }
+	    }
+	    
+	    @Override
+	    protected void onPostExecute(String result) {
+	    	if (result != null) {
+	    		if (result.equals("success")) {
+	    			// show message that booking was successful
+	    		} else {
+	    			// show message that booking was not successful
+	    		}
+    		} else {
+    			// show message that booking was not successful
+	    	}
+			// unlock the court 
+			String[] parms = { targetCourt.getBookingId() };
+			RHSCUnlockCourtTimeTask bgTask = new RHSCUnlockCourtTimeTask();
+			bgTask.execute(parms);
+	    }
+
 	}
 
 }
