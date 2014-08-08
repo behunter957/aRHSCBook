@@ -51,7 +51,8 @@ public class BookSinglesActivity extends Activity {
 	
 	private RHSCCourtTime targetCourt;
 	private ArrayAdapter<CharSequence> spinnerAdapter;
-	boolean can_book = false;
+	private boolean can_book = false;
+	private int returnValue;
 	
 	static final int SELECT_PLAYER2 = 2;
 	
@@ -357,6 +358,7 @@ public class BookSinglesActivity extends Activity {
 
 	private class RHSCUnlockCourtTimeTask extends AsyncTask<String, Void, Void> {
 		
+		
 		public URI getRequestURI(String booking) {
 			String myURL = String.format("http://%s/Reserve/IOSLockBookingJSON.php?booking_id=%s",
 						RHSCServer.get().getURL(), booking);
@@ -373,6 +375,7 @@ public class BookSinglesActivity extends Activity {
 	    protected Void doInBackground(String... parms) {
 	    	// parm 1 is booking
 	    	URI targetURI = getRequestURI(parms[0]);
+	    	returnValue = (parms[1].equals("success")?RESULT_OK:RESULT_CANCELED);
 	        StringBuilder builder = new StringBuilder();
 	        HttpClient client = new DefaultHttpClient();
 	        HttpGet httpGet = new HttpGet(targetURI);
@@ -406,7 +409,7 @@ public class BookSinglesActivity extends Activity {
 	    protected void onPostExecute(Void result) {
 	    	// show message cant lock and return to parent
 			Intent returnIntent = new Intent();
-			setResult(RESULT_OK,returnIntent);
+			setResult(returnValue,returnIntent);
 			finish();
 	    }
 
@@ -479,7 +482,7 @@ public class BookSinglesActivity extends Activity {
     			// show message that booking was not successful
 	    	}
 			// unlock the court 
-			String[] parms = { targetCourt.getBookingId() };
+			String[] parms = { targetCourt.getBookingId(), result };
 			RHSCUnlockCourtTimeTask bgTask = new RHSCUnlockCourtTimeTask();
 			bgTask.execute(parms);
 	    }
