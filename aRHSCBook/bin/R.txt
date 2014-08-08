@@ -5,6 +5,8 @@ int anim abc_slide_in_top 0x7f040003
 int anim abc_slide_out_bottom 0x7f040004
 int anim abc_slide_out_top 0x7f040005
 int array court_selection_array 0x7f0c0000
+int array doubles_event_array 0x7f0c0002
+int array singles_event_array 0x7f0c0001
 int attr actionBarDivider 0x7f01000f
 int attr actionBarItemBackground 0x7f010010
 int attr actionBarSize 0x7f01000e
@@ -240,7 +242,7 @@ int drawable group 0x7f020058
 int drawable ic_launcher 0x7f020059
 int drawable search 0x7f02005a
 int id BookingsFragment 0x7f050055
-int id CourtListFragment 0x7f050058
+int id CourtListFragment 0x7f050059
 int id TabViewFragment 0x7f05004b
 int id action_bar 0x7f05001c
 int id action_bar_activity_content 0x7f050015
@@ -253,7 +255,7 @@ int id action_context_bar 0x7f05001d
 int id action_menu_divider 0x7f050016
 int id action_menu_presenter 0x7f050017
 int id action_mode_close_button 0x7f050024
-int id action_settings 0x7f05005b
+int id action_settings 0x7f05005c
 int id activity_chooser_view_content 0x7f050025
 int id always 0x7f05000b
 int id beginning 0x7f050011
@@ -264,8 +266,8 @@ int id checkbox 0x7f05002d
 int id collapseActionView 0x7f05000d
 int id courtAndTime 0x7f050050
 int id courtTimeDesc 0x7f05003c
-int id customSpinnerItemTextView 0x7f05005a
-int id dateButton1 0x7f050056
+int id customSpinnerItemTextView 0x7f05005b
+int id dateButton1 0x7f050057
 int id default_activity_button 0x7f050028
 int id dialog 0x7f05000e
 int id disableHome 0x7f050008
@@ -273,9 +275,10 @@ int id dropdown 0x7f05000f
 int id edit_query 0x7f050030
 int id end 0x7f050013
 int id eventAndPlayers 0x7f050051
+int id eventSpinner1 0x7f050045
 int id expand_activities_button 0x7f050026
 int id expanded_menu 0x7f05002c
-int id fullName 0x7f050059
+int id fullName 0x7f05005a
 int id guest2 0x7f050042
 int id home 0x7f050014
 int id homeAsUp 0x7f050005
@@ -314,11 +317,11 @@ int id shortcut 0x7f05002e
 int id showCustom 0x7f050007
 int id showHome 0x7f050004
 int id showTitle 0x7f050006
-int id spinner1 0x7f050045
+int id spinner1 0x7f050056
 int id split_action_bar 0x7f05001e
 int id status 0x7f050052
 int id submit_area 0x7f050039
-int id switch1 0x7f050057
+int id switch1 0x7f050058
 int id tabMode 0x7f050002
 int id tabbar 0x7f05004c
 int id tbd2 0x7f050041

@@ -236,6 +236,7 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 		return listAdapter;
 	}
 	
+	
 	private class RHSCSelectCourtTimesTask extends AsyncTask<String, Void, String> {
 		
 		public URI getRequestURI(String scheddate,String courttype,String include,String uid) {

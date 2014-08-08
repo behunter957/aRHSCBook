@@ -7,4 +7,17 @@
         <item>Front</item>
         <item>Back</item>
     </string-array>
+   <string-array name="singles_event_array">
+        <item>Friendly</item>
+        <item>Ladder</item>
+        <item>MNHL</item>
+        <item>Lesson</item>
+        <item>Tournament</item>
+    </string-array>
+   <string-array name="doubles_event_array">
+        <item>Friendly</item>
+        <item>Ladder</item>
+        <item>Lesson</item>
+        <item>Tournament</item>
+    </string-array>
 </resources>
