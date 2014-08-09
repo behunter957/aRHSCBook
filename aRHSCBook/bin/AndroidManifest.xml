@@ -12,7 +12,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/rhscappicon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
@@ -32,6 +32,10 @@
             android:name=".BookSinglesActivity"
             android:label="@string/title_activity_book_singles" >
         </activity>
-    </application>
+        <activity
+            android:name=".BookDoublesActivity"
+            android:label="@string/title_activity_book_doubles" >
+        </activity>
+        </application>
 
 </manifest>

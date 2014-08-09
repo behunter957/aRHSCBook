@@ -48,7 +48,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class BookSinglesActivity extends Activity {
+public class BookDoublesActivity extends Activity {
 	
 	private RHSCCourtTime targetCourt;
 	private ArrayAdapter<CharSequence> spinnerAdapter;
@@ -56,13 +56,15 @@ public class BookSinglesActivity extends Activity {
 	private int returnValue;
 	
 	static final int SELECT_PLAYER2 = 2;
+	static final int SELECT_PLAYER3 = 3;
+	static final int SELECT_PLAYER4 = 4;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_book_singles);
+		setContentView(R.layout.activity_book_doubles);
 		
-    	Log.i("BookSinglesActivity","onCreate");
+    	Log.i("BookDoublesActivity","onCreate");
 		Intent intent = getIntent();
 		String jsonCourt = intent.getStringExtra("court");
 		Gson gson = new Gson();
@@ -109,9 +111,8 @@ public class BookSinglesActivity extends Activity {
 			public void onClick(View v) {
 				if (can_book) {
 					// first update the booking - http call
-//					String myURL = String.format("http://%s/Reserve/IOSLockBookingJSON.php?b_id=%s,player1=%s,player2=%s,uid=%s,channel=%s,courtEvent=%s",
-//							RHSCServer.get().getURL(), parms[0], parms[1], parms[2], RHSCPreferences.get().getUserid(),"android", parms[3]);
-					String[] parms = { targetCourt.getBookingId(), RHSCPreferences.get().getUserid(), targetCourt.getPlayer_id()[1],targetCourt.getEvent() };
+					String[] parms = { targetCourt.getBookingId(), RHSCPreferences.get().getUserid(), 
+							targetCourt.getPlayer_id()[1], targetCourt.getPlayer_id()[2], targetCourt.getPlayer_id()[3],targetCourt.getEvent() };
 					RHSCBookCourtTimeTask bgTask = new RHSCBookCourtTimeTask();
 					bgTask.execute(parms);
 				}
@@ -131,9 +132,9 @@ public class BookSinglesActivity extends Activity {
 		});
 		
 		// intercept radio button select for player2
-		RadioGroup rg = (RadioGroup) findViewById(R.id.player2);
+		RadioGroup rg2 = (RadioGroup) findViewById(R.id.player2);
 		
-        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        rg2.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId)
@@ -164,6 +165,71 @@ public class BookSinglesActivity extends Activity {
             }
         });
 
+		// intercept radio button select for player2
+		RadioGroup rg3 = (RadioGroup) findViewById(R.id.player3);
+		
+        rg3.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId)
+            {
+	        	RadioButton playerButton = (RadioButton) findViewById(R.id.member3);
+                switch(checkedId)
+                {
+                case R.id.tbd3:
+                	targetCourt.getPlayer_id()[2] = "TBD";
+                	targetCourt.getPlayer_lname()[2] = "TBD";
+    	        	playerButton.setText("Select Member");
+                    break;
+                case R.id.guest3:
+                	targetCourt.getPlayer_id()[2] = "Guest";
+                	targetCourt.getPlayer_lname()[2] = "Guest";
+    	        	playerButton.setText("Select Member");
+                    break;
+                case R.id.member3:
+                	Log.i("BookSinglesActivity","button for member clicked");
+					Intent intent = new Intent(getApplicationContext(),
+							PickPlayerActivity.class);
+					startActivityForResult(intent,SELECT_PLAYER3);
+                    break;
+                }
+            }
+        });
+
+		// intercept radio button select for player4
+		RadioGroup rg4 = (RadioGroup) findViewById(R.id.player4);
+		
+        rg4.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId)
+            {
+	        	RadioButton playerButton = (RadioButton) findViewById(R.id.member4);
+                switch(checkedId)
+                {
+                case R.id.tbd4:
+                    // TODO Something
+                	targetCourt.getPlayer_id()[3] = "TBD";
+                	targetCourt.getPlayer_lname()[3] = "TBD";
+    	        	playerButton.setText("Select Member");
+                    break;
+                case R.id.guest4:
+                    // TODO Something
+                	targetCourt.getPlayer_id()[3] = "Guest";
+                	targetCourt.getPlayer_lname()[3] = "Guest";
+    	        	playerButton.setText("Select Member");
+                    break;
+                case R.id.member4:
+                    // TODO Something
+                	Log.i("BookSinglesActivity","button for member clicked");
+					Intent intent = new Intent(getApplicationContext(),
+							PickPlayerActivity.class);
+					startActivityForResult(intent,SELECT_PLAYER4);
+                    break;
+                }
+            }
+        });
+
 	}
 
 	@Override
@@ -182,6 +248,36 @@ public class BookSinglesActivity extends Activity {
 	        }
 	        if (resultCode == android.app.Activity.RESULT_CANCELED) {
 	        	Log.i("return from select player2",data.getExtras().getString("reason"));
+	        }
+	    }
+	    if (requestCode == SELECT_PLAYER3) {
+	        // Make sure the request was successful
+	        if (resultCode == android.app.Activity.RESULT_OK) {
+	        	Gson gson = new Gson();
+	        	RHSCMember player = gson.fromJson(data.getExtras().getString("player"), RHSCMember.class);
+	        	RadioButton playerButton = (RadioButton) findViewById(R.id.member3);
+	        	playerButton.setText(player.getDisplayName());
+            	targetCourt.getPlayer_id()[2] = player.getName();
+            	targetCourt.getPlayer_lname()[2] = player.getLastName();
+	        	Log.i("return from select player3",player.getName());
+	        }
+	        if (resultCode == android.app.Activity.RESULT_CANCELED) {
+	        	Log.i("return from select player3",data.getExtras().getString("reason"));
+	        }
+	    }
+	    if (requestCode == SELECT_PLAYER4) {
+	        // Make sure the request was successful
+	        if (resultCode == android.app.Activity.RESULT_OK) {
+	        	Gson gson = new Gson();
+	        	RHSCMember player = gson.fromJson(data.getExtras().getString("player"), RHSCMember.class);
+	        	RadioButton playerButton = (RadioButton) findViewById(R.id.member4);
+	        	playerButton.setText(player.getDisplayName());
+            	targetCourt.getPlayer_id()[3] = player.getName();
+            	targetCourt.getPlayer_lname()[3] = player.getLastName();
+	        	Log.i("return from select player4",player.getName());
+	        }
+	        if (resultCode == android.app.Activity.RESULT_CANCELED) {
+	        	Log.i("return from select player4",data.getExtras().getString("reason"));
 	        }
 	    }
 	}
@@ -437,8 +533,8 @@ public class BookSinglesActivity extends Activity {
 	private class RHSCBookCourtTimeTask extends AsyncTask<String, Void, String> {
 		
 		public URI getRequestURI(String[] parms) {
-			String myURL = String.format("http://%s/Reserve/IOSUpdateBookingJSON.php?b_id=%s&player1=%s&player2=%s&uid=%s&channel=%s&courtEvent=%s",
-						RHSCServer.get().getURL(), parms[0], parms[1], parms[2], RHSCPreferences.get().getUserid(),"aRHSCBook", parms[3]);
+			String myURL = String.format("http://%s/Reserve/IOSUpdateBookingJSON.php?b_id=%s&player1=%s&player2=%s&player3=%s&player4=%s&uid=%s&channel=%s&courtEvent=%s",
+						RHSCServer.get().getURL(), parms[0], parms[1], parms[2], parms[3], parms[4], RHSCPreferences.get().getUserid(),"aRHSCBook", parms[5]);
 			Log.i("BookCourtTime",myURL);
 			try {
 				URI targetURI = new URI(myURL);
@@ -471,6 +567,7 @@ public class BookSinglesActivity extends Activity {
 	                        Log.i("BookCourtTime", builder.toString()); //response data
 	            			try {
 		            			JSONObject jObj = new JSONObject(builder.toString());
+		            			Log.i("book doubles result",jObj.has("result")?jObj.getString("result"):jObj.getString("error"));
 		            			return jObj.has("result")?"success":"error";
 	            			} catch (JSONException je) {
 	            				return "error";

@@ -17,6 +17,7 @@
         android1:id="@+id/tabbar"
         android1:layout_width="match_parent"
         android1:layout_height="wrap_content"
+        android1:padding="20dp"
         android:layout_weight="0"
         android1:orientation="horizontal" >
         <RadioButton

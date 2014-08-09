@@ -22,6 +22,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.rhsquashclub.arhscbook.BookDoublesActivity;
 import com.rhsquashclub.arhscbook.BookSinglesActivity;
 import com.rhsquashclub.arhscbook.R;
 import com.rhsquashclub.arhscbook.model.RHSCCourtSelection;
@@ -66,6 +67,7 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 	private RHSCDatePickerDialog dialog = null;
 	
 	static final int BOOK_SINGLES_COURT = 1;
+	static final int BOOK_DOUBLES_COURT = 2;
 
 	public RHSCSelectedCourtTimesFragment() {
 		// TODO Auto-generated constructor stub
@@ -187,12 +189,15 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 				Log.d("SelectedCourtTimes",
 						String.format("item %d clicked", position));
 				if (courts.get(position).getStatus().equals("Available")) {
+					Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+					Log.i("GSON Court Time",gson.toJson(courts.get(position)));
+
 					if (courts.get(position).getCourt().equals("Court 5")) {
-
+						Intent intent = new Intent(getActivity(),
+								BookDoublesActivity.class);
+						intent.putExtra("court", gson.toJson(courts.get(position)));
+						startActivityForResult(intent,BOOK_DOUBLES_COURT);
 					} else {
-						Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-						Log.i("GSON Court Time",gson.toJson(courts.get(position)));
-
 						Intent intent = new Intent(getActivity(),
 								BookSinglesActivity.class);
 						intent.putExtra("court", gson.toJson(courts.get(position)));
@@ -233,6 +238,22 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 	        }
 	        if (resultCode == android.app.Activity.RESULT_CANCELED) {
 	        	Log.i("return from book singles","court not booked");
+	        }
+	    }
+	    if (requestCode == BOOK_DOUBLES_COURT) {
+	        // Make sure the request was successful
+	        if (resultCode == android.app.Activity.RESULT_OK) {
+	        	Log.i("return from book doubles","court booked");
+		    	Calendar sd = RHSCSelectedCourtTimesFragment.this.selectedDate;
+				String[] parms = { String.format("%d-%02d=%02d",sd.get(Calendar.YEAR) ,sd.get(Calendar.MONTH)+1,sd.get(Calendar.DAY_OF_MONTH)), 
+						RHSCPreferences.get().getCourtSelection().getText(), 
+						RHSCPreferences.get().isIncludeBookings()?"YES":"NO", 
+						RHSCPreferences.get().getUserid() };
+				RHSCSelectCourtTimesTask bgTask = new RHSCSelectCourtTimesTask();
+				bgTask.execute(parms);
+	        }
+	        if (resultCode == android.app.Activity.RESULT_CANCELED) {
+	        	Log.i("return from book doubles","court not booked");
 	        }
 	    }
 	}
