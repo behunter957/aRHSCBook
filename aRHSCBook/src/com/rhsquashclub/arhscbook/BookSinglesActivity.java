@@ -46,6 +46,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class BookSinglesActivity extends Activity {
 	
@@ -61,6 +62,7 @@ public class BookSinglesActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_book_singles);
 		
+    	Log.i("BookSinglesActivity","onCreate");
 		Intent intent = getIntent();
 		String jsonCourt = intent.getStringExtra("court");
 		Gson gson = new Gson();
@@ -73,7 +75,7 @@ public class BookSinglesActivity extends Activity {
 		bgTask.execute(parms);
 		// then populate the view
 		String ctdText = String.format("%s on %s", targetCourt.getCourt(),new SimpleDateFormat(
-				"EEEE, MMMM d", Locale.ENGLISH)
+				"EEEE, MMMM d 'at' h:mm", Locale.ENGLISH)
 				.format(targetCourt.getCourtTime()));
 		TextView courtDesc = (TextView) findViewById(R.id.courtTimeDesc);
 		courtDesc.setText(ctdText);
@@ -109,7 +111,7 @@ public class BookSinglesActivity extends Activity {
 					// first update the booking - http call
 //					String myURL = String.format("http://%s/Reserve/IOSLockBookingJSON.php?b_id=%s,player1=%s,player2=%s,uid=%s,channel=%s,courtEvent=%s",
 //							RHSCServer.get().getURL(), parms[0], parms[1], parms[2], RHSCPreferences.get().getUserid(),"android", parms[3]);
-					String[] parms = { targetCourt.getBookingId(), targetCourt.getPlayer_id()[0], targetCourt.getPlayer_id()[1],targetCourt.getEvent() };
+					String[] parms = { targetCourt.getBookingId(), RHSCPreferences.get().getUserid(), targetCourt.getPlayer_id()[1],targetCourt.getEvent() };
 					RHSCBookCourtTimeTask bgTask = new RHSCBookCourtTimeTask();
 					bgTask.execute(parms);
 				}
@@ -140,9 +142,13 @@ public class BookSinglesActivity extends Activity {
                 {
                 case R.id.tbd2:
                     // TODO Something
+                	targetCourt.getPlayer_id()[1] = "TBD";
+                	targetCourt.getPlayer_lname()[1] = "TBD";
                     break;
                 case R.id.guest2:
                     // TODO Something
+                	targetCourt.getPlayer_id()[1] = "Guest";
+                	targetCourt.getPlayer_lname()[1] = "Guest";
                     break;
                 case R.id.member2:
                     // TODO Something
@@ -167,6 +173,8 @@ public class BookSinglesActivity extends Activity {
 	        	RHSCMember player = gson.fromJson(data.getExtras().getString("player"), RHSCMember.class);
 	        	RadioButton playerButton = (RadioButton) findViewById(R.id.member2);
 	        	playerButton.setText(player.getDisplayName());
+            	targetCourt.getPlayer_id()[1] = player.getName();
+            	targetCourt.getPlayer_lname()[1] = player.getLastName();
 	        	Log.i("return from select player2",player.getName());
 	        }
 	        if (resultCode == android.app.Activity.RESULT_CANCELED) {
@@ -284,8 +292,9 @@ public class BookSinglesActivity extends Activity {
 	private class RHSCLockCourtTimeTask extends AsyncTask<String, Void, String> {
 		
 		public URI getRequestURI(String booking,String uid) {
-			String myURL = String.format("http://%s/Reserve/IOSLockBookingJSON.php?booking_id=%s&uid=%s",
+			String myURL = String.format("http://%s/Reserve/IOSLockBookingJSON.php?bookingId=%s&uid=%s",
 						RHSCServer.get().getURL(), booking, uid);
+			Log.i("LockCourtTimes",myURL);
 			try {
 				URI targetURI = new URI(myURL);
 				return targetURI;
@@ -299,6 +308,7 @@ public class BookSinglesActivity extends Activity {
 	    protected String doInBackground(String... parms) {
 	    	// parm 1 is booking
 	    	// parm 2 is uid
+			Log.i("lock court","doInBackground");
 	    	URI targetURI = getRequestURI(parms[0],parms[1]);
 	        StringBuilder builder = new StringBuilder();
 	        HttpClient client = new DefaultHttpClient();
@@ -317,6 +327,7 @@ public class BookSinglesActivity extends Activity {
 	                                builder.append(line);
 	                        }
 //	                        Log.v("Getter", "Your data: " + builder.toString()); //response data
+	            			Log.i("lock court",builder.toString());
 	            			try {
 		            			JSONObject jObj = new JSONObject(builder.toString());
 		            			return jObj.has("result")?"success":"error";
@@ -348,6 +359,11 @@ public class BookSinglesActivity extends Activity {
 	    		}
 	    	}
 	    	// show message cant lock and return to parent
+			Context context = getApplicationContext();
+			CharSequence text = "Court could not be locked";
+			int duration = Toast.LENGTH_LONG;
+			Toast toast = Toast.makeText(context, text, duration);
+			toast.show();
 			Intent returnIntent = new Intent();
 			returnIntent.putExtra("reason","could not lock the court"); 
 			setResult(RESULT_CANCELED,returnIntent);
@@ -418,8 +434,9 @@ public class BookSinglesActivity extends Activity {
 	private class RHSCBookCourtTimeTask extends AsyncTask<String, Void, String> {
 		
 		public URI getRequestURI(String[] parms) {
-			String myURL = String.format("http://%s/Reserve/IOSLockBookingJSON.php?b_id=%s,player1=%s,player2=%s,uid=%s,channel=%s,courtEvent=%s",
+			String myURL = String.format("http://%s/Reserve/IOSUpdateBookingJSON.php?b_id=%s&player1=%s&player2=%s&uid=%s&channel=%s&courtEvent=%s",
 						RHSCServer.get().getURL(), parms[0], parms[1], parms[2], RHSCPreferences.get().getUserid(),"android", parms[3]);
+			Log.i("BookCourtTime",myURL);
 			try {
 				URI targetURI = new URI(myURL);
 				return targetURI;
@@ -448,7 +465,7 @@ public class BookSinglesActivity extends Activity {
 	                        while ((line = reader.readLine()) != null) {
 	                                builder.append(line);
 	                        }
-//	                        Log.v("Getter", "Your data: " + builder.toString()); //response data
+	                        Log.i("BookCourtTime", builder.toString()); //response data
 	            			try {
 		            			JSONObject jObj = new JSONObject(builder.toString());
 		            			return jObj.has("result")?"success":"error";
@@ -475,11 +492,26 @@ public class BookSinglesActivity extends Activity {
 	    	if (result != null) {
 	    		if (result.equals("success")) {
 	    			// show message that booking was successful
+	    			Context context = getApplicationContext();
+	    			CharSequence text = "Court booked";
+	    			int duration = Toast.LENGTH_LONG;
+	    			Toast toast = Toast.makeText(context, text, duration);
+	    			toast.show();
 	    		} else {
 	    			// show message that booking was not successful
+	    			Context context = getApplicationContext();
+	    			CharSequence text = "Court not booked - server error";
+	    			int duration = Toast.LENGTH_LONG;
+	    			Toast toast = Toast.makeText(context, text, duration);
+	    			toast.show();
 	    		}
     		} else {
     			// show message that booking was not successful
+    			Context context = getApplicationContext();
+    			CharSequence text = "Court not booked - network error";
+    			int duration = Toast.LENGTH_LONG;
+    			Toast toast = Toast.makeText(context, text, duration);
+    			toast.show();
 	    	}
 			// unlock the court 
 			String[] parms = { targetCourt.getBookingId(), result };
