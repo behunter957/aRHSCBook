@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -35,7 +37,16 @@ public class RHSCMain extends ActionBarActivity {
 		.replace(R.id.TabViewFragment,
 				RHSCMain.courtListFragment).commit();
 
-		RadioGroup rg = (RadioGroup) findViewById(R.id.tabbar);
+	    ConnectivityManager connMgr = (ConnectivityManager) 
+	            getSystemService(Context.CONNECTIVITY_SERVICE);
+	        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+	        if (networkInfo != null && networkInfo.isConnected()) {
+	            // fetch data
+	        } else {
+	            // display error
+	        }
+
+	        RadioGroup rg = (RadioGroup) findViewById(R.id.tabbar);
 		rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				// Context context = getApplicationContext();
