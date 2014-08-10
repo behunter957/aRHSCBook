@@ -19,9 +19,12 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.rhsquashclub.arhscbook.BookDoublesActivity;
 import com.rhsquashclub.arhscbook.BookSinglesActivity;
 import com.rhsquashclub.arhscbook.R;
 import com.rhsquashclub.arhscbook.model.RHSCCourtSelection;
@@ -30,9 +33,11 @@ import com.rhsquashclub.arhscbook.model.RHSCPreferences;
 import com.rhsquashclub.arhscbook.model.RHSCSelectedCourtTimes;
 import com.rhsquashclub.arhscbook.model.RHSCServer;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -54,11 +59,13 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.Toast;
 
 public class RHSCSelectedCourtTimesFragment extends Fragment {
 
 	private RHSCSelectedCourtTimes courts;
 	private Calendar selectedDate;
+	private RHSCCourtTime selectedCourtTime;
 	
 	private RHSCCourtTimeAdapter listAdapter;
 	private Button dateSel = null;
@@ -66,6 +73,7 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 	private RHSCDatePickerDialog dialog = null;
 	
 	static final int BOOK_SINGLES_COURT = 1;
+	static final int BOOK_DOUBLES_COURT = 2;
 
 	public RHSCSelectedCourtTimesFragment() {
 		// TODO Auto-generated constructor stub
@@ -186,13 +194,17 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 					int position, long id) {
 				Log.d("SelectedCourtTimes",
 						String.format("item %d clicked", position));
+				selectedCourtTime = courts.get(position); 
 				if (courts.get(position).getStatus().equals("Available")) {
+					Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+					Log.i("GSON Court Time",gson.toJson(courts.get(position)));
+
 					if (courts.get(position).getCourt().equals("Court 5")) {
-
+						Intent intent = new Intent(getActivity(),
+								BookDoublesActivity.class);
+						intent.putExtra("court", gson.toJson(courts.get(position)));
+						startActivityForResult(intent,BOOK_DOUBLES_COURT);
 					} else {
-						Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-						Log.i("GSON Court Time",gson.toJson(courts.get(position)));
-
 						Intent intent = new Intent(getActivity(),
 								BookSinglesActivity.class);
 						intent.putExtra("court", gson.toJson(courts.get(position)));
@@ -200,9 +212,52 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 					}
 				} else {
 					// not available - cancel?
+					AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+							getActivity());
+
+					// set title
+					String ctdText = String.format("%s on %s", courts.get(position).getCourt(),new SimpleDateFormat(
+							"EEEE, MMMM d 'at' h:mm", Locale.ENGLISH)
+							.format(courts.get(position).getCourtTime()));
+					alertDialogBuilder.setTitle(ctdText);
+
+					// set dialog message
+					alertDialogBuilder
+							.setMessage("Do you wish to cancel this booking?")
+							.setCancelable(false)
+							.setPositiveButton("Yes",
+									new DialogInterface.OnClickListener() {
+										public void onClick(
+												DialogInterface dialog, int id) {
+											// if this button is clicked, close
+											// current activity
+											// MainActivity.this.finish();
+											String[] parms = { selectedCourtTime.getBookingId(), RHSCPreferences.get().getUserid(), 
+													selectedCourtTime.getPlayer_id()[1], selectedCourtTime.getPlayer_id()[2], selectedCourtTime.getPlayer_id()[3],selectedCourtTime.getEvent() };
+											RHSCCancelCourtTimeTask bgTask = new RHSCCancelCourtTimeTask();
+											bgTask.execute(parms);
+											dialog.cancel();
+										}
+									})
+							.setNegativeButton("No",
+									new DialogInterface.OnClickListener() {
+										public void onClick(
+												DialogInterface dialog, int id) {
+											// if this button is clicked, just
+											// close
+											// the dialog box and do nothing
+											dialog.cancel();
+										}
+									});
+
+					// create alert dialog
+					AlertDialog alertDialog = alertDialogBuilder.create();
+
+					// show it
+					alertDialog.show();
 				}
 			}
-		});		
+		});
 		
     	Calendar sd = selectedDate;
 		String[] parms = { String.format("%d-%02d=%02d",sd.get(Calendar.YEAR) ,sd.get(Calendar.MONTH)+1,sd.get(Calendar.DAY_OF_MONTH)), 
@@ -233,6 +288,22 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 	        }
 	        if (resultCode == android.app.Activity.RESULT_CANCELED) {
 	        	Log.i("return from book singles","court not booked");
+	        }
+	    }
+	    if (requestCode == BOOK_DOUBLES_COURT) {
+	        // Make sure the request was successful
+	        if (resultCode == android.app.Activity.RESULT_OK) {
+	        	Log.i("return from book doubles","court booked");
+		    	Calendar sd = RHSCSelectedCourtTimesFragment.this.selectedDate;
+				String[] parms = { String.format("%d-%02d=%02d",sd.get(Calendar.YEAR) ,sd.get(Calendar.MONTH)+1,sd.get(Calendar.DAY_OF_MONTH)), 
+						RHSCPreferences.get().getCourtSelection().getText(), 
+						RHSCPreferences.get().isIncludeBookings()?"YES":"NO", 
+						RHSCPreferences.get().getUserid() };
+				RHSCSelectCourtTimesTask bgTask = new RHSCSelectCourtTimesTask();
+				bgTask.execute(parms);
+	        }
+	        if (resultCode == android.app.Activity.RESULT_CANCELED) {
+	        	Log.i("return from book doubles","court not booked");
 	        }
 	    }
 	}
@@ -307,6 +378,98 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 	    }
 
 	}
+
+	private class RHSCCancelCourtTimeTask extends AsyncTask<String, Void, String> {
+		
+		public URI getRequestURI(String[] parms) {
+			String myURL = String.format("http://%s/Reserve/IOSCancelBookingJSON.php?b_id=%s&player1=%s&player2=%s&player3=%s&player4=%s&uid=%s&channel=%s",
+						RHSCServer.get().getURL(), parms[0], parms[1], parms[2], parms[3], parms[4], RHSCPreferences.get().getUserid(),"aRHSCBook", parms[5]);
+			Log.i("CancelCourtTime",myURL);
+			try {
+				URI targetURI = new URI(myURL);
+				return targetURI;
+			} catch (URISyntaxException e) {
+				Log.e("URI Syntax Exception",e.toString());
+				return null;
+			}
+		}
+		
+	    @Override
+	    protected String doInBackground(String... parms) {
+	    	URI targetURI = getRequestURI(parms);
+	        StringBuilder builder = new StringBuilder();
+	        HttpClient client = new DefaultHttpClient();
+	        HttpGet httpGet = new HttpGet(targetURI);
+	        try {
+	                HttpResponse response = client.execute(httpGet);
+	                StatusLine statusLine = response.getStatusLine();
+	                int statusCode = statusLine.getStatusCode();
+	                if (statusCode == 200) {
+	                        HttpEntity entity = response.getEntity();
+	                        InputStream content = entity.getContent();
+	                        BufferedReader reader = new BufferedReader(
+	                                        new InputStreamReader(content));
+	                        String line;
+	                        while ((line = reader.readLine()) != null) {
+	                                builder.append(line);
+	                        }
+	                        Log.i("CancelCourtTime", builder.toString()); //response data
+	            			try {
+		            			JSONObject jObj = new JSONObject(builder.toString());
+		            			Log.i("cancel court result",jObj.has("success")?jObj.getString("success"):jObj.getString("error"));
+		            			return jObj.has("success")?"success":"error";
+	            			} catch (JSONException je) {
+	            				return "error";
+	            			}
+	                } else {
+	                        Log.e("Getter", "Failed to download file");
+	                        return "error";
+	                }
+	        } catch (ClientProtocolException e) {
+	        		Log.e("Getter", "ClientProtocolException on ".concat(targetURI.toString()));
+	                e.printStackTrace();
+	                return "error";
+	        } catch (IOException e) {
+	            	Log.e("Getter", "IOException on ".concat(targetURI.toString()));
+	                e.printStackTrace();
+	                return "error";
+	        }
+	    }
+	    
+	    @Override
+	    protected void onPostExecute(String result) {
+	    	if (result != null) {
+	    		if (result.equals("success")) {
+	    			// show message that booking was successful
+	    			CharSequence text = "Court cancelled";
+	    			int duration = Toast.LENGTH_LONG;
+	    			Toast toast = Toast.makeText(getActivity(), text, duration);
+	    			toast.show();
+			    	Calendar sd = RHSCSelectedCourtTimesFragment.this.selectedDate;
+					String[] parms = { String.format("%d-%02d=%02d",sd.get(Calendar.YEAR) ,sd.get(Calendar.MONTH)+1,sd.get(Calendar.DAY_OF_MONTH)), 
+							RHSCPreferences.get().getCourtSelection().getText(), 
+							RHSCPreferences.get().isIncludeBookings()?"YES":"NO", 
+							RHSCPreferences.get().getUserid() };
+					RHSCSelectCourtTimesTask bgTask = new RHSCSelectCourtTimesTask();
+					bgTask.execute(parms);
+	    		} else {
+	    			// show message that booking was not successful
+	    			CharSequence text = "Court not cancelled - server error";
+	    			int duration = Toast.LENGTH_LONG;
+	    			Toast toast = Toast.makeText(getActivity(), text, duration);
+	    			toast.show();
+	    		}
+    		} else {
+    			// show message that booking was not successful
+    			CharSequence text = "Court not cancelled - network error";
+    			int duration = Toast.LENGTH_LONG;
+    			Toast toast = Toast.makeText(getActivity(), text, duration);
+    			toast.show();
+	    	}
+	    }
+
+	}
+	
 
 
 }

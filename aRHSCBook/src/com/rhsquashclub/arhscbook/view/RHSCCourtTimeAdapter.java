@@ -5,6 +5,7 @@ import com.rhsquashclub.arhscbook.model.*;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,8 +52,17 @@ public class RHSCCourtTimeAdapter extends ArrayAdapter<RHSCCourtTime> {
         holder.status.setText(courtTime.getStatus());
         if (courtTime.getStatus().equals("Available")) {
            	holder.eventAndPlayers.setText("");
+           	holder.status.setTextColor(Color.rgb(1,104,32));
         } else {
         	holder.eventAndPlayers.setText(courtTime.getEventAndPlayers());
+           	holder.status.setTextColor(Color.BLACK);
+        	String user = RHSCPreferences.get().getUserid(); 
+        	for (int i = 0; i < 4; i++) {
+        		if (user.equals(courtTime.getPlayer_id()[i])) {
+                   	holder.status.setTextColor(Color.RED);
+        			break;
+        		}
+        	}
         }
        
         return row;

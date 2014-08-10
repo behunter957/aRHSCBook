@@ -114,19 +114,19 @@
         android:gravity="center" >
 
         <Button
-            android:id="@+id/bookButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight=".5"
-            android:text="Book" />
-
-        <Button
             android:id="@+id/cancelButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight=".5"
             android:text="Cancel" />
 
-    </LinearLayout>
+        <Button
+            android:id="@+id/bookButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:text="Book" />
+
+        </LinearLayout>
 
 </LinearLayout>
