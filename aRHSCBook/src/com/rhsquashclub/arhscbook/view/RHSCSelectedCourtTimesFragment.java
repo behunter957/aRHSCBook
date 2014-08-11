@@ -65,6 +65,7 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 
 	private RHSCSelectedCourtTimes courts;
 	private Calendar selectedDate;
+	private Calendar currentDate;
 	private RHSCCourtTime selectedCourtTime;
 	
 	private RHSCCourtTimeAdapter listAdapter;
@@ -92,7 +93,13 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 		getActivity().setTitle(R.string.courts_title); 
 		
 		courts = RHSCSelectedCourtTimes.get(getActivity());
-		selectedDate = Calendar.getInstance();
+		currentDate = Calendar.getInstance();
+		if (selectedDate == null) {
+			selectedDate = Calendar.getInstance();
+		} 
+		if (selectedDate.getTimeInMillis() < currentDate.getTimeInMillis()) {
+			selectedDate = currentDate;
+		}
 
 		Spinner courtSel = (Spinner) view.findViewById(R.id.spinner1);
 		ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getActivity(),
@@ -122,6 +129,7 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 		    }
 
 		});
+		courtSel.setSelection(RHSCPreferences.get().getCourtSelection().getPos());
 		
 		dateSel = (Button) view.findViewById(R.id.dateButton1);
 		String buttonText = new SimpleDateFormat(

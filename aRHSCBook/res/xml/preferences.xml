@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+	<ListPreference
+            android:key="selectCourts"
+            android:title="Court Selection"
+            android:summary="Filter Court List"
+            android:entries="@array/court_selection_array"
+            android:entryValues="@array/court_selection_array"
+            android:defaultValue="All"/>
+    <SwitchPreference 
+		android:key="includeBookings" 
+		android:title="Include Bookings in Court List"         
+		android:switchTextOff="NO" 
+        android:switchTextOn="YES"/>
+    
+
+</PreferenceScreen>

@@ -14,5 +14,7 @@
     <string name="title_activity_pick_player">Select Player</string>
     <string name="title_activity_book_singles">Book Singles Court</string>
     <string name="title_activity_book_doubles">Book Doubles Court</string>
-    
+    <string name="title_activity_settings">aRHSCBook Settings and Preferences</string>
+    <string name="hello_world">Hello world!</string>
+
 </resources>

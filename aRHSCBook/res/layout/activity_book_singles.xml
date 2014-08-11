@@ -2,26 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" 
-    android:padding="50dp"
-    android:layout_margin="15dp"
-    android:gravity="center_vertical" >
+    android:layout_margin="5dp"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:padding="10dp" >
 
     <TextView
         android:id="@+id/courtTimeDesc"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="1"
-        android:text="Court 1 for Sun Jul 29"
         android:gravity="center"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:text="Court 1 for Sun Jul 29"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-	    android:padding="15dp"
-		android:gravity="center_vertical" >
-		
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="5dp" >
+
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
@@ -35,14 +35,13 @@
             android:layout_height="wrap_content"
             android:text="Bruce Hunter"
             android:textAppearance="?android:attr/textAppearanceMedium" />
-
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-	    android:padding="15dp"
-        android:gravity="center_vertical" >
+        android:gravity="center_vertical"
+        android:padding="5dp" >
 
         <TextView
             android:id="@+id/textView4"
@@ -55,63 +54,60 @@
         <RadioGroup
             android:id="@+id/player2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal" >
 
-        <RadioButton
-            android:id="@+id/tbd2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TBD" 
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
+            <RadioButton
+                android:id="@+id/member2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Member"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <RadioButton
-            android:id="@+id/guest2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Guest" 
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            <RadioButton
+                android:id="@+id/tbd2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TBD"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <RadioButton
-            android:id="@+id/member2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Select Member" 
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
+            <RadioButton
+                android:id="@+id/guest2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Guest"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
         </RadioGroup>
-
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="1" 
-	    android:padding="15dp"
-        android:gravity="center" >
+        android:layout_weight="1"
+        android:gravity="center"
+        android:padding="5dp" >
 
         <TextView
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Event:"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <Spinner
             android:id="@+id/eventSpinner1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
-
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="1" 
-	    android:padding="15dp"
-        android:gravity="center" >
+        android:layout_weight="1"
+        android:gravity="center"
+        android:padding="5dp" >
 
         <Button
             android:id="@+id/cancelButton"
@@ -126,7 +122,6 @@
             android:layout_height="wrap_content"
             android:layout_weight=".5"
             android:text="Book" />
-
-        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

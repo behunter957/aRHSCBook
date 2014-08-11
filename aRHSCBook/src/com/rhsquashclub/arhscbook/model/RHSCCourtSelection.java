@@ -19,6 +19,10 @@ public enum RHSCCourtSelection {
 		return text;
 	}
 	
+	public int getPos() {
+		return pos;
+	}
+	
 	public static RHSCCourtSelection find(int pos) {
 		for (RHSCCourtSelection cs : RHSCCourtSelection.values()) {
 			if (pos == cs.pos) return cs;

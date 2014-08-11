@@ -1,6 +1,11 @@
 package com.rhsquashclub.arhscbook.model;
 
+import com.rhsquashclub.arhscbook.RHSCMain;
+
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.view.View;
 
 public class RHSCPreferences {
 	
