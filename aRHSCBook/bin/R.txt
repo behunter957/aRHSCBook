@@ -402,9 +402,10 @@ int layout member_list_item_row 0x7f030023
 int layout spinner_item 0x7f030024
 int layout support_simple_spinner_dropdown_item 0x7f030025
 int menu book_singles 0x7f0e0000
-int menu pick_player 0x7f0e0001
-int menu rhscmain 0x7f0e0002
-int menu settings 0x7f0e0003
+int menu contact 0x7f0e0001
+int menu pick_player 0x7f0e0002
+int menu rhscmain 0x7f0e0003
+int menu settings 0x7f0e0004
 int string abc_action_bar_home_description 0x7f0b0001
 int string abc_action_bar_up_description 0x7f0b0002
 int string abc_action_menu_overflow_description 0x7f0b0003
@@ -430,6 +431,7 @@ int string tab_button_text_courts 0x7f0b0010
 int string tab_button_text_members 0x7f0b0012
 int string title_activity_book_doubles 0x7f0b0019
 int string title_activity_book_singles 0x7f0b0018
+int string title_activity_contact 0x7f0b001c
 int string title_activity_my_main 0x7f0b000f
 int string title_activity_pick_player 0x7f0b0017
 int string title_activity_settings 0x7f0b001a

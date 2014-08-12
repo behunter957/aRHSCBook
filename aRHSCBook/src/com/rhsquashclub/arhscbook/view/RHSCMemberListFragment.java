@@ -15,10 +15,15 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.rhsquashclub.arhscbook.BookDoublesActivity;
+import com.rhsquashclub.arhscbook.ContactActivity;
 import com.rhsquashclub.arhscbook.R;
 import com.rhsquashclub.arhscbook.RHSCMain;
 import com.rhsquashclub.arhscbook.model.*;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -74,10 +79,11 @@ public class RHSCMemberListFragment extends Fragment {
 					int position, long id) {
 				Log.d("Member List",
 						String.format("item %d clicked", position));
-				// Intent intent = new Intent(context, SendMessage.class);
-				// String message = "abc";
-				// intent.putExtra(EXTRA_MESSAGE, message);
-				// startActivity(intent);
+				Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+				Log.i("GSON Member",gson.toJson(members.get(position)));
+				Intent intent = new Intent(getActivity(), ContactActivity.class);
+				intent.putExtra("member", gson.toJson(members.get(position)));
+				startActivity(intent);
 			}
 		});		
 		

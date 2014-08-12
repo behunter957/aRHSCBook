@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:padding="20dp" >
+
+    <TextView
+        android:id="@+id/contact_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="Bruce Hunter Long Name"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/contact_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/contact_name"
+        android:layout_below="@+id/contact_name"
+        android:layout_marginTop="45dp"
+        android:text="b_hunter@rogers.com"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/contact_phone1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/contact_email"
+        android:layout_below="@+id/contact_email"
+        android:layout_marginTop="45dp"
+        android:text="647-883-0306"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/contact_phone2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/contact_phone1"
+        android:layout_below="@+id/contact_phone1"
+        android:layout_marginTop="45dp"
+        android:text="905-773-0186"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ImageButton
+        android:id="@+id/email_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/contact_email"
+        android:layout_alignBottom="@+id/contact_email"
+        android:layout_below="@+id/contact_name"
+        android:src="@drawable/email" />
+
+    <ImageButton
+        android:id="@+id/phone1_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/contact_phone1"
+        android:layout_alignBottom="@+id/contact_phone1"
+        android:layout_marginLeft="15dp"
+        android:layout_below="@+id/contact_email"
+        android:src="@drawable/telephone" />
+
+    <ImageButton
+        android:id="@+id/phone2_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/contact_phone2"
+        android:layout_alignBottom="@+id/contact_phone2"
+        android:layout_marginLeft="15dp"
+        android:layout_below="@+id/contact_phone1"
+        android:src="@drawable/telephone" />
+
+    <ImageButton
+        android:id="@+id/sms1_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/phone1_button"
+        android:layout_alignRight="@+id/sms2_button"
+        android:layout_alignTop="@+id/phone1_button"
+        android:layout_toRightOf="@+id/phone1_button"
+        android:src="@drawable/sms" />
+
+    <ImageButton
+        android:id="@+id/sms2_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/phone2_button"
+        android:layout_alignTop="@+id/phone2_button"
+        android:layout_toRightOf="@+id/phone2_button"
+        android:src="@drawable/sms" />
+
+</RelativeLayout>
