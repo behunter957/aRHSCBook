@@ -80,9 +80,9 @@ public class RHSCMemberListFragment extends Fragment {
 				Log.d("Member List",
 						String.format("item %d clicked", position));
 				Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-				Log.i("GSON Member",gson.toJson(members.get(position)));
+				Log.i("GSON Member",gson.toJson(adapter.getItem(position)));
 				Intent intent = new Intent(getActivity(), ContactActivity.class);
-				intent.putExtra("member", gson.toJson(members.get(position)));
+				intent.putExtra("member", gson.toJson(adapter.getItem(position)));
 				startActivity(intent);
 			}
 		});		

@@ -9,7 +9,7 @@
             android:defaultValue="All"/>
     <SwitchPreference 
 		android:key="includeBookings" 
-		android:title="Include Bookings in Court List"         
+		android:title="Include Bookings"         
 		android:switchTextOff="NO" 
         android:switchTextOn="YES"/>
     

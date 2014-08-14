@@ -42,7 +42,7 @@ public class RHSCMain extends ActionBarActivity {
 		RHSCPreferences.get().setUserid(sharedPref.getString("userid", ""));		
 		RHSCPreferences.get().setPassword(sharedPref.getString("password", ""));
 		Log.i("selectCourts",sharedPref.getString("selectCourts", ""));
-		RHSCPreferences.get().setCourtSelection(RHSCCourtSelection.valueOf(sharedPref.getString("selectCourts", "")));		
+		RHSCPreferences.get().setCourtSelection(RHSCCourtSelection.valueOf(sharedPref.getString("selectCourts", "All")));		
 		RHSCPreferences.get().setIncludeBookings(sharedPref.getBoolean("includeBookings", false));		
 
 		RHSCSelectedCourtTimes.get(this.getApplicationContext());

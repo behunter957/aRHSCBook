@@ -6,6 +6,7 @@ import com.rhsquashclub.arhscbook.model.RHSCMember;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ContactActivity extends Activity {
 	
@@ -41,9 +43,19 @@ public class ContactActivity extends Activity {
 				public void onClick(View v) {
 					// placeholder
 					Log.i("ContactActivity","email button clicked");
-					Intent returnIntent = new Intent();
-					setResult(RESULT_CANCELED, returnIntent);
-					finish();
+					Intent i = new Intent(Intent.ACTION_SEND);
+					i.setType("message/rfc822");
+					i.putExtra(Intent.EXTRA_EMAIL  , new String[]{ member.getEmail() });
+					i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
+					i.putExtra(Intent.EXTRA_TEXT   , "body of email");
+					try {
+					    startActivity(Intent.createChooser(i, "Send mail..."));
+					} catch (android.content.ActivityNotFoundException ex) {
+					    Toast.makeText(ContactActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+					}
+//					Intent returnIntent = new Intent();
+//					setResult(RESULT_CANCELED, returnIntent);
+//					finish();
 				}
 			});
 		}
@@ -64,9 +76,15 @@ public class ContactActivity extends Activity {
 				public void onClick(View v) {
 					// placeholder
 					Log.i("ContactActivity","phone1 button clicked");
-					Intent returnIntent = new Intent();
-					setResult(RESULT_CANCELED, returnIntent);
-					finish();
+					try {
+						startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("tel:"
+		                        + member.getPhone2())));
+					} catch (android.content.ActivityNotFoundException ex) {
+					    Toast.makeText(ContactActivity.this, "Telephony not available.", Toast.LENGTH_SHORT).show();
+					}
+//					Intent returnIntent = new Intent();
+//					setResult(RESULT_CANCELED, returnIntent);
+//					finish();
 				}
 			});
 			sms1Button.setOnClickListener(new View.OnClickListener() {
@@ -74,9 +92,15 @@ public class ContactActivity extends Activity {
 				public void onClick(View v) {
 					// placeholder
 					Log.i("ContactActivity","sms1 button clicked");
-					Intent returnIntent = new Intent();
-					setResult(RESULT_CANCELED, returnIntent);
-					finish();
+					try {
+						startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("sms:"
+		                        + member.getPhone1())));
+					} catch (android.content.ActivityNotFoundException ex) {
+					    Toast.makeText(ContactActivity.this, "Telephony not available.", Toast.LENGTH_SHORT).show();
+					}
+//					Intent returnIntent = new Intent();
+//					setResult(RESULT_CANCELED, returnIntent);
+//					finish();
 				}
 			});
 		}
@@ -97,9 +121,15 @@ public class ContactActivity extends Activity {
 				public void onClick(View v) {
 					// placeholder
 					Log.i("ContactActivity","phone2 button clicked");
-					Intent returnIntent = new Intent();
-					setResult(RESULT_CANCELED, returnIntent);
-					finish();
+					try {
+						startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("tel:"
+		                        + member.getPhone2())));
+					} catch (android.content.ActivityNotFoundException ex) {
+					    Toast.makeText(ContactActivity.this, "Telephony not available.", Toast.LENGTH_SHORT).show();
+					}
+//					Intent returnIntent = new Intent();
+//					setResult(RESULT_CANCELED, returnIntent);
+//					finish();
 				}
 			});
 			sms2Button.setOnClickListener(new View.OnClickListener() {
@@ -107,9 +137,15 @@ public class ContactActivity extends Activity {
 				public void onClick(View v) {
 					// placeholder
 					Log.i("ContactActivity","sms2 button clicked");
-					Intent returnIntent = new Intent();
-					setResult(RESULT_CANCELED, returnIntent);
-					finish();
+					try {
+						startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("sms:"
+		                        + member.getPhone2())));
+					} catch (android.content.ActivityNotFoundException ex) {
+					    Toast.makeText(ContactActivity.this, "Telephony not available.", Toast.LENGTH_SHORT).show();
+					}
+//					Intent returnIntent = new Intent();
+//					setResult(RESULT_CANCELED, returnIntent);
+//					finish();
 				}
 			});
 		}
