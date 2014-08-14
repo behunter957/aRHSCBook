@@ -7,8 +7,10 @@ import com.rhsquashclub.arhscbook.model.RHSCMember;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -27,39 +29,89 @@ public class ContactActivity extends Activity {
 		TextView contactName = (TextView) findViewById(R.id.contact_name);
 		contactName.setText(member.getDisplayName());
 		TextView contactEmail = (TextView) findViewById(R.id.contact_email);
+		ImageButton emailButton = (ImageButton) findViewById(R.id.email_button);
 		if (member.getEmail().equalsIgnoreCase("NULL")) {
 			contactEmail.setText("");
-			ImageButton emailButton = (ImageButton) findViewById(R.id.email_button);
 			emailButton.setEnabled(false);
 			emailButton.setVisibility(android.view.View.INVISIBLE);
 		} else {
 			contactEmail.setText(member.getEmail());
+			emailButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// placeholder
+					Log.i("ContactActivity","email button clicked");
+					Intent returnIntent = new Intent();
+					setResult(RESULT_CANCELED, returnIntent);
+					finish();
+				}
+			});
 		}
 
 		TextView contactPhone1 = (TextView) findViewById(R.id.contact_phone1);
+		ImageButton phone1Button = (ImageButton) findViewById(R.id.phone1_button);
+		ImageButton sms1Button = (ImageButton) findViewById(R.id.sms1_button);
 		if (member.getPhone1().equalsIgnoreCase("NULL")) {
 			contactPhone1.setText("");
-			ImageButton phone1Button = (ImageButton) findViewById(R.id.phone1_button);
 			phone1Button.setEnabled(false);
 			phone1Button.setVisibility(android.view.View.INVISIBLE);
-			ImageButton sms1Button = (ImageButton) findViewById(R.id.sms1_button);
 			sms1Button.setEnabled(false);
 			sms1Button.setVisibility(android.view.View.INVISIBLE);
 		} else {
 			contactPhone1.setText(member.getPhone1());
+			phone1Button.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// placeholder
+					Log.i("ContactActivity","phone1 button clicked");
+					Intent returnIntent = new Intent();
+					setResult(RESULT_CANCELED, returnIntent);
+					finish();
+				}
+			});
+			sms1Button.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// placeholder
+					Log.i("ContactActivity","sms1 button clicked");
+					Intent returnIntent = new Intent();
+					setResult(RESULT_CANCELED, returnIntent);
+					finish();
+				}
+			});
 		}
 
 		TextView contactPhone2 = (TextView) findViewById(R.id.contact_phone2);
+		ImageButton phone2Button = (ImageButton) findViewById(R.id.phone2_button);
+		ImageButton sms2Button = (ImageButton) findViewById(R.id.sms2_button);
 		if (member.getPhone2().equalsIgnoreCase("NULL")) {
 			contactPhone2.setText("");
-			ImageButton phone2Button = (ImageButton) findViewById(R.id.phone2_button);
 			phone2Button.setEnabled(false);
 			phone2Button.setVisibility(android.view.View.INVISIBLE);
-			ImageButton sms2Button = (ImageButton) findViewById(R.id.sms2_button);
 			sms2Button.setEnabled(false);
 			sms2Button.setVisibility(android.view.View.INVISIBLE);
 		} else {
-			contactPhone1.setText(member.getPhone1());
+			contactPhone2.setText(member.getPhone1());
+			phone2Button.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// placeholder
+					Log.i("ContactActivity","phone2 button clicked");
+					Intent returnIntent = new Intent();
+					setResult(RESULT_CANCELED, returnIntent);
+					finish();
+				}
+			});
+			sms2Button.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// placeholder
+					Log.i("ContactActivity","sms2 button clicked");
+					Intent returnIntent = new Intent();
+					setResult(RESULT_CANCELED, returnIntent);
+					finish();
+				}
+			});
 		}
 	}
 
