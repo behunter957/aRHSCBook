@@ -53,9 +53,24 @@ public class RHSCMemberList extends ArrayList<RHSCMember> {
 				RHSCGetMemberListTask bgTask = memList.new RHSCGetMemberListTask();
 				Void[] parms = {};
 				bgTask.execute(parms);
+			} else {
+				RHSCMain.retryMemberLoad = true;
+				Log.i("RHSCmemberList","not logged on");
 			}
 		}
 		return memList;
+	}
+	
+	public void reload() {
+		if (RHSCUser.get().isLoggedOn()) {
+			RHSCGetMemberListTask bgTask = memList.new RHSCGetMemberListTask();
+			Void[] parms = {};
+			bgTask.execute(parms);
+			RHSCMain.retryMemberLoad = false;
+		} else {
+			RHSCMain.retryMemberLoad = true;
+			Log.i("RHSCmemberList","not logged on");
+		}
 	}
 	
 	public static RHSCMember tbd() {

@@ -30,12 +30,14 @@ public class RHSCMain extends ActionBarActivity {
 	public static RHSCSelectedCourtTimesFragment courtListFragment = new RHSCSelectedCourtTimesFragment();
 	public static RHSCMyBookingsFragment myBookingsFragment = new RHSCMyBookingsFragment();
 	public static RHSCMemberListFragment memberListFragment = new RHSCMemberListFragment();
-	public static boolean isLoggedOn = true; // TODO set to false once logon code is in place
+	public static boolean isLoggedOn = true; 
+	public static boolean retryMemberLoad = false; 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_rhscmain);
+		
 		PreferenceManager.setDefaultValues(this, R.xml.settings, false);
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -46,6 +48,8 @@ public class RHSCMain extends ActionBarActivity {
 		RHSCPreferences.get().setCourtSelection(RHSCCourtSelection.valueOf(sharedPref.getString("selectCourts", "All")));		
 		RHSCPreferences.get().setIncludeBookings(sharedPref.getBoolean("includeBookings", false));		
 
+		RHSCUser.get().authenticate();
+		
 		RHSCSelectedCourtTimes.get(this.getApplicationContext());
 		RHSCMyBookings.get(this.getApplicationContext());
 		RHSCMemberList.get(this.getApplicationContext());

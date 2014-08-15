@@ -75,34 +75,34 @@ public class RHSCSelectedCourtTimes extends RHSCCourtTimeList {
 		this.selectedDate = selectedDate;
 	}
 	
-	public RHSCSelectedCourtTimes testSampleSelected() {
-		this.clear();
-		String[] courts = {"Court 1","Court 2"};
-		int j = 0;
-		for (String crt : courts) {
-			try {
-				Date courtTime = new SimpleDateFormat("MMMM d, yyyy h:mm a",
-						Locale.ENGLISH).parse("July 22, 2014 1:30 pm");
-				for (int i = 0; i < 10; i++) {
-					String datePart = new SimpleDateFormat(
-							"MMMM d, yyyy", Locale.ENGLISH)
-							.format(courtTime);
-					String timePart = new SimpleDateFormat(
-							"h:mm a", Locale.ENGLISH)
-							.format(courtTime);
-					String bookId = String.format("%4d", (i * courts.length) + j);
-					Log.i("adding court time", bookId.concat(":").concat(crt));
-					this.add(new RHSCCourtTime(bookId,crt,datePart,timePart));
-					Calendar cal = Calendar.getInstance();
-					cal.setTime(courtTime);
-					cal.add(Calendar.MINUTE, 40);
-					courtTime = cal.getTime();
-				}
-			} catch (Exception e) {
-				Log.e("load sample", e.getLocalizedMessage());
-			}
-			j += 1;
-		}
-		return this;
-	}
+//	public RHSCSelectedCourtTimes testSampleSelected() {
+//		this.clear();
+//		String[] courts = {"Court 1","Court 2"};
+//		int j = 0;
+//		for (String crt : courts) {
+//			try {
+//				Date courtTime = new SimpleDateFormat("MMMM d, yyyy h:mm a",
+//						Locale.ENGLISH).parse("July 22, 2014 1:30 pm");
+//				for (int i = 0; i < 10; i++) {
+//					String datePart = new SimpleDateFormat(
+//							"MMMM d, yyyy", Locale.ENGLISH)
+//							.format(courtTime);
+//					String timePart = new SimpleDateFormat(
+//							"h:mm a", Locale.ENGLISH)
+//							.format(courtTime);
+//					String bookId = String.format("%4d", (i * courts.length) + j);
+//					Log.i("adding court time", bookId.concat(":").concat(crt));
+//					this.add(new RHSCCourtTime(bookId,crt,datePart,timePart));
+//					Calendar cal = Calendar.getInstance();
+//					cal.setTime(courtTime);
+//					cal.add(Calendar.MINUTE, 40);
+//					courtTime = cal.getTime();
+//				}
+//			} catch (Exception e) {
+//				Log.e("load sample", e.getLocalizedMessage());
+//			}
+//			j += 1;
+//		}
+//		return this;
+//	}
 }

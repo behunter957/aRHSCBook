@@ -102,7 +102,7 @@ public class RHSCMyBookingsFragment extends Fragment {
 										// if this button is clicked, close
 										// current activity
 										// MainActivity.this.finish();
-										String[] parms = { selectedBooking.getBookingId(), RHSCPreferences.get().getUserid(), 
+										String[] parms = { selectedBooking.getBookingId(), RHSCUser.get().getName(), 
 												selectedBooking.getPlayer_id()[1], selectedBooking.getPlayer_id()[2], selectedBooking.getPlayer_id()[3],selectedBooking.getEvent() };
 										RHSCCancelCourtTimeTask bgTask = new RHSCCancelCourtTimeTask();
 										bgTask.execute(parms);
@@ -129,9 +129,11 @@ public class RHSCMyBookingsFragment extends Fragment {
 		});		
 		
 		if (RHSCUser.get().isLoggedOn()) {
-			String[] parms = { RHSCPreferences.get().getUserid() };
+			String[] parms = { RHSCUser.get().getName() };
 			RHSCMyBookingsTask bgTask = new RHSCMyBookingsTask();
 			bgTask.execute(parms);
+		} else {
+			Log.i("RHSCMyBookingsFragment","not logged on");
 		}
 		return view;
 	}
@@ -210,7 +212,7 @@ public class RHSCMyBookingsFragment extends Fragment {
 		
 		public URI getRequestURI(String[] parms) {
 			String myURL = String.format("http://%s/Reserve/IOSCancelBookingJSON.php?b_id=%s&player1=%s&player2=%s&player3=%s&player4=%s&uid=%s&channel=%s",
-						RHSCServer.get().getURL(), parms[0], parms[1], parms[2], parms[3], parms[4], RHSCPreferences.get().getUserid(),"aRHSCBook", parms[5]);
+						RHSCServer.get().getURL(), parms[0], parms[1], parms[2], parms[3], parms[4], RHSCUser.get().getName(),"aRHSCBook", parms[5]);
 			Log.i("CancelCourtTime",myURL);
 			try {
 				URI targetURI = new URI(myURL);
@@ -272,7 +274,7 @@ public class RHSCMyBookingsFragment extends Fragment {
 	    			int duration = Toast.LENGTH_LONG;
 	    			Toast toast = Toast.makeText(getActivity(), text, duration);
 	    			toast.show();
-	    			String[] parms = { RHSCPreferences.get().getUserid() };
+	    			String[] parms = { RHSCUser.get().getName() };
 					RHSCMyBookingsTask bgTask = new RHSCMyBookingsTask();
 					bgTask.execute(parms);
 	    		} else {

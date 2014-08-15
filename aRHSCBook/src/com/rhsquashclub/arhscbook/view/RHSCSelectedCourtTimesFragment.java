@@ -120,7 +120,7 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 				String[] parms = { String.format("%d-%02d=%02d",sd.get(Calendar.YEAR) ,sd.get(Calendar.MONTH)+1,sd.get(Calendar.DAY_OF_MONTH)), 
 						RHSCPreferences.get().getCourtSelection().getText(), 
 						RHSCPreferences.get().isIncludeBookings()?"YES":"NO", 
-						RHSCPreferences.get().getUserid() };
+						RHSCUser.get().getName() };
 				RHSCSelectCourtTimesTask bgTask = new RHSCSelectCourtTimesTask();
 				bgTask.execute(parms);
 		    }
@@ -160,7 +160,7 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 								String[] parms = { String.format("%d-%02d=%02d",year,monthOfYear+1,dayOfMonth), 
 										RHSCPreferences.get().getCourtSelection().getText(), 
 										RHSCPreferences.get().isIncludeBookings()?"YES":"NO", 
-										RHSCPreferences.get().getUserid() };
+										RHSCUser.get().getName() };
 								RHSCSelectCourtTimesTask bgTask = new RHSCSelectCourtTimesTask();
 								bgTask.execute(parms);
 								String buttonText = new SimpleDateFormat(
@@ -187,7 +187,7 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 				String[] parms = { String.format("%d-%02d=%02d",sd.get(Calendar.YEAR) ,sd.get(Calendar.MONTH)+1,sd.get(Calendar.DAY_OF_MONTH)), 
 						RHSCPreferences.get().getCourtSelection().getText(), 
 						RHSCPreferences.get().isIncludeBookings()?"YES":"NO", 
-						RHSCPreferences.get().getUserid() };
+						RHSCUser.get().getName() };
 				RHSCSelectCourtTimesTask bgTask = new RHSCSelectCourtTimesTask();
 				bgTask.execute(parms);
 		    }
@@ -242,7 +242,7 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 											// if this button is clicked, close
 											// current activity
 											// MainActivity.this.finish();
-											String[] parms = { selectedCourtTime.getBookingId(), RHSCPreferences.get().getUserid(), 
+											String[] parms = { selectedCourtTime.getBookingId(), RHSCUser.get().getName(), 
 													selectedCourtTime.getPlayer_id()[1], selectedCourtTime.getPlayer_id()[2], selectedCourtTime.getPlayer_id()[3],selectedCourtTime.getEvent() };
 											RHSCCancelCourtTimeTask bgTask = new RHSCCancelCourtTimeTask();
 											bgTask.execute(parms);
@@ -278,9 +278,11 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 							sd.get(Calendar.DAY_OF_MONTH)),
 					RHSCPreferences.get().getCourtSelection().getText(),
 					RHSCPreferences.get().isIncludeBookings() ? "YES" : "NO",
-					RHSCPreferences.get().getUserid() };
+					RHSCUser.get().getName()};
 			RHSCSelectCourtTimesTask bgTask = new RHSCSelectCourtTimesTask();
 			bgTask.execute(parms);
+		} else {
+			Log.i("RHSCSelectedCourtTimesFragment","not logged on");
 		}
 		// use view.findViewById(id) to set values in the view
 		
@@ -298,7 +300,7 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 				String[] parms = { String.format("%d-%02d=%02d",sd.get(Calendar.YEAR) ,sd.get(Calendar.MONTH)+1,sd.get(Calendar.DAY_OF_MONTH)), 
 						RHSCPreferences.get().getCourtSelection().getText(), 
 						RHSCPreferences.get().isIncludeBookings()?"YES":"NO", 
-						RHSCPreferences.get().getUserid() };
+						RHSCUser.get().getName() };
 				RHSCSelectCourtTimesTask bgTask = new RHSCSelectCourtTimesTask();
 				bgTask.execute(parms);
 	        }
@@ -314,7 +316,7 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 				String[] parms = { String.format("%d-%02d=%02d",sd.get(Calendar.YEAR) ,sd.get(Calendar.MONTH)+1,sd.get(Calendar.DAY_OF_MONTH)), 
 						RHSCPreferences.get().getCourtSelection().getText(), 
 						RHSCPreferences.get().isIncludeBookings()?"YES":"NO", 
-						RHSCPreferences.get().getUserid() };
+						RHSCUser.get().getName() };
 				RHSCSelectCourtTimesTask bgTask = new RHSCSelectCourtTimesTask();
 				bgTask.execute(parms);
 	        }
@@ -399,7 +401,7 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 		
 		public URI getRequestURI(String[] parms) {
 			String myURL = String.format("http://%s/Reserve/IOSCancelBookingJSON.php?b_id=%s&player1=%s&player2=%s&player3=%s&player4=%s&uid=%s&channel=%s",
-						RHSCServer.get().getURL(), parms[0], parms[1], parms[2], parms[3], parms[4], RHSCPreferences.get().getUserid(),"aRHSCBook", parms[5]);
+						RHSCServer.get().getURL(), parms[0], parms[1], parms[2], parms[3], parms[4], RHSCUser.get().getName(),"aRHSCBook", parms[5]);
 			Log.i("CancelCourtTime",myURL);
 			try {
 				URI targetURI = new URI(myURL);
@@ -465,7 +467,7 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 					String[] parms = { String.format("%d-%02d=%02d",sd.get(Calendar.YEAR) ,sd.get(Calendar.MONTH)+1,sd.get(Calendar.DAY_OF_MONTH)), 
 							RHSCPreferences.get().getCourtSelection().getText(), 
 							RHSCPreferences.get().isIncludeBookings()?"YES":"NO", 
-							RHSCPreferences.get().getUserid() };
+							RHSCUser.get().getName() };
 					RHSCSelectCourtTimesTask bgTask = new RHSCSelectCourtTimesTask();
 					bgTask.execute(parms);
 	    		} else {

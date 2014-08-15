@@ -70,7 +70,7 @@ public class BookSinglesActivity extends Activity {
 
 		// first lock the court (will update can_book if successful)
 		String[] parms = { targetCourt.getBookingId(),
-				RHSCPreferences.get().getUserid() };
+				RHSCUser.get().getName() };
 		RHSCLockCourtTimeTask bgTask = new RHSCLockCourtTimeTask();
 		bgTask.execute(parms);
 		// then populate the view
@@ -117,7 +117,7 @@ public class BookSinglesActivity extends Activity {
 					// RHSCServer.get().getURL(), parms[0], parms[1], parms[2],
 					// RHSCPreferences.get().getUserid(),"android", parms[3]);
 					String[] parms = { targetCourt.getBookingId(),
-							RHSCPreferences.get().getUserid(),
+							RHSCUser.get().getName(),
 							targetCourt.getPlayer_id()[1],
 							targetCourt.getEvent() };
 					RHSCBookCourtTimeTask bgTask = new RHSCBookCourtTimeTask();
@@ -465,7 +465,7 @@ public class BookSinglesActivity extends Activity {
 			String myURL = String
 					.format("http://%s/Reserve/IOSUpdateBookingJSON.php?b_id=%s&player1=%s&player2=%s&uid=%s&channel=%s&courtEvent=%s",
 							RHSCServer.get().getURL(), parms[0], parms[1],
-							parms[2], RHSCPreferences.get().getUserid(),
+							parms[2], RHSCUser.get().getName(),
 							"aRHSCBook", parms[3]);
 			Log.i("BookCourtTime", myURL);
 			try {

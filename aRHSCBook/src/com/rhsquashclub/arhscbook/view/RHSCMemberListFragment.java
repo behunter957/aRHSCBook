@@ -57,7 +57,6 @@ public class RHSCMemberListFragment extends Fragment {
 
 	@Override public void onCreate( Bundle savedInstanceState) { 
 		super.onCreate( savedInstanceState); 
-		
 	}
 
 	@Override
@@ -69,6 +68,10 @@ public class RHSCMemberListFragment extends Fragment {
 		
 		members = RHSCMemberList.get(getActivity());
 		
+		if (RHSCMain.retryMemberLoad) {
+			members.reload();
+		}
+
 		adapter = 
 				new RHSCMemberAdapter(getActivity(), R.layout.member_list_item_row, members); 
 		ListView lv = (ListView) view.findViewById(R.id.member_list_view);

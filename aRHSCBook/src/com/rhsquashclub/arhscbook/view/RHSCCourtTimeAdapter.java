@@ -56,7 +56,7 @@ public class RHSCCourtTimeAdapter extends ArrayAdapter<RHSCCourtTime> {
         } else {
         	holder.eventAndPlayers.setText(courtTime.getEventAndPlayers());
            	holder.status.setTextColor(Color.BLACK);
-        	String user = RHSCPreferences.get().getUserid(); 
+        	String user = RHSCUser.get().getName(); 
         	for (int i = 0; i < 4; i++) {
         		if (user.equals(courtTime.getPlayer_id()[i])) {
                    	holder.status.setTextColor(Color.RED);

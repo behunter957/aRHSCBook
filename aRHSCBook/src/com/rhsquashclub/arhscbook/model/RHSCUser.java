@@ -36,10 +36,6 @@ public class RHSCUser extends RHSCMember {
 		return loggedOn;
 	}
 
-	public void validate(String userid,String password) {
-		user.name = userid;
-	}
-	
 	public static RHSCUser get() {
 		if (user == null) {
 			user = new RHSCUser();
@@ -47,6 +43,11 @@ public class RHSCUser extends RHSCMember {
 		return user;
 	}
 
+	public void authenticate() {
+		RHSCLogonTask bgTask = new RHSCLogonTask();
+		bgTask.execute();
+	}
+	
 	private class RHSCLogonTask extends AsyncTask<Void, Void, String> {
 		
 		public URI getRequestURI() {
@@ -99,22 +100,27 @@ public class RHSCUser extends RHSCMember {
 	    }
 	    
 	    @Override
-	    protected void onPostExecute(String result) {
-	    	if (result != null) {
-	   		try {
-				JSONObject jObj = new JSONObject(result);
+		protected void onPostExecute(String result) {
+			if (result != null) {
+				try {
+					Log.i("RHSCUser", result);
+					JSONObject jObj = new JSONObject(result);
 					if (jObj.has("user")) {
-						JSONObject jUser = jObj.getJSONObject("user");
-						RHSCUser.this.loadFromJSON(jUser);
-						RHSCUser.this.loggedOn = true;
+						JSONArray jArr = jObj.getJSONArray("user");
+						JSONObject jUser = jArr.getJSONObject(0);
+						Log.i("RHSCUser", "authenticated");
+						loadFromJSON(jUser);
+						loggedOn = true;
 					} else {
-						RHSCUser.this.loggedOn = false;
+						Log.i("RHSCUser", "NOT authenticated");
+						loggedOn = false;
 					}
 					// TODO deal with errors and populate the user member
 				} catch (JSONException je) {
+					Log.i("RHSCUser", "JSON error");
 				}
-	    	}
-	    }
+			}
+		}
 
 	}
 
