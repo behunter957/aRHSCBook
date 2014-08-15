@@ -31,7 +31,7 @@ public class RHSCMain extends ActionBarActivity {
 	public static RHSCMyBookingsFragment myBookingsFragment = new RHSCMyBookingsFragment();
 	public static RHSCMemberListFragment memberListFragment = new RHSCMemberListFragment();
 	public static boolean isLoggedOn = true; 
-	public static boolean retryMemberLoad = false; 
+	public static boolean retryMemberLoad = true; 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public class RHSCMain extends ActionBarActivity {
 		
 		RHSCSelectedCourtTimes.get(this.getApplicationContext());
 		RHSCMyBookings.get(this.getApplicationContext());
-		RHSCMemberList.get(this.getApplicationContext());
+		RHSCMemberList.get(this.getApplicationContext()).load();
 
 		// show courts view by default
 		FragmentManager fm = getSupportFragmentManager();

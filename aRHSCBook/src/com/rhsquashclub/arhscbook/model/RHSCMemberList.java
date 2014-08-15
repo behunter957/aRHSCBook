@@ -41,6 +41,9 @@ public class RHSCMemberList extends ArrayList<RHSCMember> {
 	private static RHSCMember TBD;
 	private static RHSCMember GUEST;
 	
+	private RHSCMemberAdapter adapter;
+	private boolean notifyFragment = false;
+	
 	public RHSCMemberList() {
 		super();
 	}
@@ -48,20 +51,26 @@ public class RHSCMemberList extends ArrayList<RHSCMember> {
 	public static RHSCMemberList get(Context c) {
 		if (memList == null) {
 			memList = new RHSCMemberList();
-	    	// TODO check if logged on before allowing retrieval of court times
-			if (RHSCUser.get().isLoggedOn()) {
-				RHSCGetMemberListTask bgTask = memList.new RHSCGetMemberListTask();
-				Void[] parms = {};
-				bgTask.execute(parms);
-			} else {
-				RHSCMain.retryMemberLoad = true;
-				Log.i("RHSCmemberList","not logged on");
-			}
 		}
 		return memList;
 	}
 	
-	public void reload() {
+	public void reload(RHSCMemberAdapter adapter) {
+		this.adapter = adapter;
+		notifyFragment = true;
+		if (RHSCUser.get().isLoggedOn()) {
+			RHSCGetMemberListTask bgTask = memList.new RHSCGetMemberListTask();
+			Void[] parms = {};
+			bgTask.execute(parms);
+			RHSCMain.retryMemberLoad = false;
+		} else {
+			RHSCMain.retryMemberLoad = true;
+			Log.i("RHSCmemberList","not logged on");
+		}
+	}
+	
+	public void load() {
+		notifyFragment = false;
 		if (RHSCUser.get().isLoggedOn()) {
 			RHSCGetMemberListTask bgTask = memList.new RHSCGetMemberListTask();
 			Void[] parms = {};
@@ -163,6 +172,9 @@ public class RHSCMemberList extends ArrayList<RHSCMember> {
 	    protected void onPostExecute(String result) {
 	    	if (result != null) {
 	           memList.loadFromJSON(result);
+	           if (notifyFragment) {
+	        	   adapter.notifyDataSetChanged();
+	           }
 	    	}
 	    }
 

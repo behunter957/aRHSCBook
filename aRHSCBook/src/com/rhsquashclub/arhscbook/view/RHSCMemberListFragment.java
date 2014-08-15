@@ -68,14 +68,16 @@ public class RHSCMemberListFragment extends Fragment {
 		
 		members = RHSCMemberList.get(getActivity());
 		
-		if (RHSCMain.retryMemberLoad) {
-			members.reload();
-		}
-
 		adapter = 
 				new RHSCMemberAdapter(getActivity(), R.layout.member_list_item_row, members); 
+
 		ListView lv = (ListView) view.findViewById(R.id.member_list_view);
 		lv.setAdapter( adapter);
+
+		if (RHSCMain.retryMemberLoad) {
+			members.reload(adapter);
+		}
+
 		lv.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
