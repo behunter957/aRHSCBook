@@ -27,11 +27,13 @@ import com.google.gson.GsonBuilder;
 import com.rhsquashclub.arhscbook.BookDoublesActivity;
 import com.rhsquashclub.arhscbook.BookSinglesActivity;
 import com.rhsquashclub.arhscbook.R;
+import com.rhsquashclub.arhscbook.RHSCMain;
 import com.rhsquashclub.arhscbook.model.RHSCCourtSelection;
 import com.rhsquashclub.arhscbook.model.RHSCCourtTime;
 import com.rhsquashclub.arhscbook.model.RHSCPreferences;
 import com.rhsquashclub.arhscbook.model.RHSCSelectedCourtTimes;
 import com.rhsquashclub.arhscbook.model.RHSCServer;
+import com.rhsquashclub.arhscbook.model.RHSCUser;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -268,12 +270,18 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 		});
 		
     	Calendar sd = selectedDate;
-		String[] parms = { String.format("%d-%02d=%02d",sd.get(Calendar.YEAR) ,sd.get(Calendar.MONTH)+1,sd.get(Calendar.DAY_OF_MONTH)), 
-				RHSCPreferences.get().getCourtSelection().getText(), 
-				RHSCPreferences.get().isIncludeBookings()?"YES":"NO", 
-				RHSCPreferences.get().getUserid() };
-		RHSCSelectCourtTimesTask bgTask = new RHSCSelectCourtTimesTask();
-		bgTask.execute(parms);
+    	// TODO check if logged on before allowing retrieval of court times
+		if (RHSCUser.get().isLoggedOn()) {
+			String[] parms = {
+					String.format("%d-%02d=%02d", sd.get(Calendar.YEAR),
+							sd.get(Calendar.MONTH) + 1,
+							sd.get(Calendar.DAY_OF_MONTH)),
+					RHSCPreferences.get().getCourtSelection().getText(),
+					RHSCPreferences.get().isIncludeBookings() ? "YES" : "NO",
+					RHSCPreferences.get().getUserid() };
+			RHSCSelectCourtTimesTask bgTask = new RHSCSelectCourtTimesTask();
+			bgTask.execute(parms);
+		}
 		// use view.findViewById(id) to set values in the view
 		
 		return view;

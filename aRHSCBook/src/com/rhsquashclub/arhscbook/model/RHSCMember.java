@@ -126,6 +126,21 @@ public class RHSCMember {
 		}
 	}
 	
+	public void loadFromJSON(JSONObject jObj) {
+		try {
+			this.name = jObj.has("id")?jObj.getString("id"):"";
+			this.lastName = jObj.has("lname")?jObj.getString("lname"):"";
+			this.firstName = jObj.has("fname")?jObj.getString("fname"):"";
+			this.status = jObj.has("status")?jObj.getString("status"):"";
+			this.type = jObj.has("member_type")?jObj.getString("member_type"):"";
+			this.email = jObj.has("email")?jObj.getString("email"):"";
+			this.phone1 = jObj.has("primary_phone")?jObj.getString("primary_phone"):"";
+			this.phone2 = jObj.has("home_phone")?jObj.getString("home_phone"):"";
+		} catch (JSONException je) {
+			//
+		}
+	}
+	
 	public String toString() {
 		return this.firstName.concat(" ").concat(this.lastName);
 	}

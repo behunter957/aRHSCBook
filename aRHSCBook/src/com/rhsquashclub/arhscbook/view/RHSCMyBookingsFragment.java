@@ -21,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.rhsquashclub.arhscbook.R;
+import com.rhsquashclub.arhscbook.RHSCMain;
 import com.rhsquashclub.arhscbook.model.*;
 
 import android.app.AlertDialog;
@@ -127,10 +128,11 @@ public class RHSCMyBookingsFragment extends Fragment {
 			}
 		});		
 		
-		String[] parms = { "bhunter" };
-		RHSCMyBookingsTask bgTask = new RHSCMyBookingsTask();
-		bgTask.execute(parms);
-		
+		if (RHSCUser.get().isLoggedOn()) {
+			String[] parms = { RHSCPreferences.get().getUserid() };
+			RHSCMyBookingsTask bgTask = new RHSCMyBookingsTask();
+			bgTask.execute(parms);
+		}
 		return view;
 	}
 

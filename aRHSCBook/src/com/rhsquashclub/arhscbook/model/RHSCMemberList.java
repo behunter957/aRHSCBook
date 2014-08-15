@@ -23,6 +23,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.rhsquashclub.arhscbook.RHSCMain;
 import com.rhsquashclub.arhscbook.view.RHSCCourtTimeAdapter;
 import com.rhsquashclub.arhscbook.view.RHSCMemberAdapter;
 
@@ -47,9 +48,12 @@ public class RHSCMemberList extends ArrayList<RHSCMember> {
 	public static RHSCMemberList get(Context c) {
 		if (memList == null) {
 			memList = new RHSCMemberList();
-			RHSCGetMemberListTask bgTask = memList.new RHSCGetMemberListTask();
-			Void[] parms = {};
-			bgTask.execute(parms);
+	    	// TODO check if logged on before allowing retrieval of court times
+			if (RHSCUser.get().isLoggedOn()) {
+				RHSCGetMemberListTask bgTask = memList.new RHSCGetMemberListTask();
+				Void[] parms = {};
+				bgTask.execute(parms);
+			}
 		}
 		return memList;
 	}

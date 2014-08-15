@@ -30,6 +30,7 @@ public class RHSCMain extends ActionBarActivity {
 	public static RHSCSelectedCourtTimesFragment courtListFragment = new RHSCSelectedCourtTimesFragment();
 	public static RHSCMyBookingsFragment myBookingsFragment = new RHSCMyBookingsFragment();
 	public static RHSCMemberListFragment memberListFragment = new RHSCMemberListFragment();
+	public static boolean isLoggedOn = true; // TODO set to false once logon code is in place
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
