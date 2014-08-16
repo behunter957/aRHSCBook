@@ -12,6 +12,10 @@ public class RHSCServer {
 
 	private String URL;
 	
+	public void setURL(String uRL) {
+		URL = uRL;
+	}
+
 	private static RHSCServer server;
 	
 	private RHSCServer(String URL) {

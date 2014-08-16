@@ -65,8 +65,8 @@ import android.widget.Toast;
 
 public class RHSCSelectedCourtTimesFragment extends Fragment {
 
-	private RHSCSelectedCourtTimes courts;
-	private Calendar selectedDate;
+	private RHSCSelectedCourtTimes courts = null;
+	private Calendar selectedDate = Calendar.getInstance();
 	private Calendar currentDate;
 	private RHSCCourtTime selectedCourtTime;
 	
@@ -111,19 +111,27 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 		// Apply the adapter to the spinner
 		courtSel.setAdapter(spinnerAdapter);
 		courtSel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-		    @Override
-		    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-		        // your code here
-		    	RHSCPreferences.get().setCourtSelection(RHSCCourtSelection.find(position));
-		    	// notify listview to refresh
-		    	Calendar sd = RHSCSelectedCourtTimesFragment.this.selectedDate;
-				String[] parms = { String.format("%d-%02d=%02d",sd.get(Calendar.YEAR) ,sd.get(Calendar.MONTH)+1,sd.get(Calendar.DAY_OF_MONTH)), 
-						RHSCPreferences.get().getCourtSelection().getText(), 
-						RHSCPreferences.get().isIncludeBookings()?"YES":"NO", 
-						RHSCUser.get().getName() };
-				RHSCSelectCourtTimesTask bgTask = new RHSCSelectCourtTimesTask();
-				bgTask.execute(parms);
-		    }
+			@Override
+			public void onItemSelected(AdapterView<?> parentView,
+					View selectedItemView, int position, long id) {
+				// your code here
+				RHSCPreferences.get().setCourtSelection(
+						RHSCCourtSelection.find(position));
+				// notify listview to refresh
+				Calendar sd = RHSCSelectedCourtTimesFragment.this.selectedDate;
+				if (RHSCUser.get().isLoggedOn()) {
+					String[] parms = {
+							String.format("%d-%02d=%02d",
+									sd.get(Calendar.YEAR),
+									sd.get(Calendar.MONTH) + 1,
+									sd.get(Calendar.DAY_OF_MONTH)),
+							RHSCPreferences.get().getCourtSelection().getText(),
+							RHSCPreferences.get().isIncludeBookings() ? "YES"
+									: "NO", RHSCUser.get().getName() };
+					RHSCSelectCourtTimesTask bgTask = new RHSCSelectCourtTimesTask();
+					bgTask.execute(parms);
+				}
+			}
 
 		    @Override
 		    public void onNothingSelected(AdapterView<?> parentView) {
@@ -157,18 +165,26 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 									int monthOfYear, int dayOfMonth) {
 								// TODO Auto-generated method stub
 								RHSCSelectedCourtTimesFragment.this.selectedDate = new GregorianCalendar(year,monthOfYear,dayOfMonth,0,0,0);
-								String[] parms = { String.format("%d-%02d=%02d",year,monthOfYear+1,dayOfMonth), 
-										RHSCPreferences.get().getCourtSelection().getText(), 
-										RHSCPreferences.get().isIncludeBookings()?"YES":"NO", 
-										RHSCUser.get().getName() };
-								RHSCSelectCourtTimesTask bgTask = new RHSCSelectCourtTimesTask();
-								bgTask.execute(parms);
-								String buttonText = new SimpleDateFormat(
-										"EEE, MMM d", Locale.ENGLISH)
-										.format(RHSCSelectedCourtTimesFragment.this.selectedDate
-												.getTime());
-								RHSCSelectedCourtTimesFragment.this.dateSel
-										.setText(buttonText);
+								if (RHSCUser.get().isLoggedOn()) {
+									String[] parms = {
+											String.format("%d-%02d=%02d", year,
+													monthOfYear + 1, dayOfMonth),
+											RHSCPreferences.get()
+													.getCourtSelection()
+													.getText(),
+											RHSCPreferences.get()
+													.isIncludeBookings() ? "YES"
+													: "NO",
+											RHSCUser.get().getName() };
+									RHSCSelectCourtTimesTask bgTask = new RHSCSelectCourtTimesTask();
+									bgTask.execute(parms);
+									String buttonText = new SimpleDateFormat(
+											"EEE, MMM d", Locale.ENGLISH)
+											.format(RHSCSelectedCourtTimesFragment.this.selectedDate
+													.getTime());
+									RHSCSelectedCourtTimesFragment.this.dateSel
+											.setText(buttonText);
+								}
 							}
 						},
 						RHSCSelectedCourtTimesFragment.this.selectedDate, cDate, tDate);
@@ -178,20 +194,29 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 		});
 		
 		Switch includeSel = (Switch) view.findViewById(R.id.switch1);
-		includeSel.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-		    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-		        // do something, the isChecked will be
-		        // true if the switch is in the On position
-		    	RHSCPreferences.get().setIncludeBookings(isChecked);
-		    	Calendar sd = RHSCSelectedCourtTimesFragment.this.selectedDate;
-				String[] parms = { String.format("%d-%02d=%02d",sd.get(Calendar.YEAR) ,sd.get(Calendar.MONTH)+1,sd.get(Calendar.DAY_OF_MONTH)), 
-						RHSCPreferences.get().getCourtSelection().getText(), 
-						RHSCPreferences.get().isIncludeBookings()?"YES":"NO", 
-						RHSCUser.get().getName() };
-				RHSCSelectCourtTimesTask bgTask = new RHSCSelectCourtTimesTask();
-				bgTask.execute(parms);
-		    }
-		});
+		includeSel
+				.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+					public void onCheckedChanged(CompoundButton buttonView,
+							boolean isChecked) {
+						// do something, the isChecked will be
+						// true if the switch is in the On position
+						RHSCPreferences.get().setIncludeBookings(isChecked);
+						Calendar sd = RHSCSelectedCourtTimesFragment.this.selectedDate;
+						if (RHSCUser.get().isLoggedOn()) {
+							String[] parms = {
+									String.format("%d-%02d=%02d",
+											sd.get(Calendar.YEAR),
+											sd.get(Calendar.MONTH) + 1,
+											sd.get(Calendar.DAY_OF_MONTH)),
+									RHSCPreferences.get().getCourtSelection()
+											.getText(),
+									RHSCPreferences.get().isIncludeBookings() ? "YES"
+											: "NO", RHSCUser.get().getName() };
+							RHSCSelectCourtTimesTask bgTask = new RHSCSelectCourtTimesTask();
+							bgTask.execute(parms);
+						}
+					}
+				});
 		includeSel.setChecked(RHSCPreferences.get().isIncludeBookings());
 		
 		listAdapter = 
@@ -324,6 +349,25 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 	        	Log.i("return from book doubles","court not booked");
 	        }
 	    }
+	}
+	
+	public void reload() {
+		Calendar sd = RHSCSelectedCourtTimesFragment.this.selectedDate;
+		if (RHSCUser.get().isLoggedOn()) {
+			String[] parms = {
+					String.format("%d-%02d=%02d",
+							sd.get(Calendar.YEAR),
+							sd.get(Calendar.MONTH) + 1,
+							sd.get(Calendar.DAY_OF_MONTH)),
+					RHSCPreferences.get().getCourtSelection().getText(),
+					RHSCPreferences.get().isIncludeBookings() ? "YES"
+							: "NO", RHSCUser.get().getName() };
+			RHSCSelectCourtTimesTask bgTask = new RHSCSelectCourtTimesTask();
+			bgTask.execute(parms);
+		}
+		if (listAdapter != null) {
+			listAdapter.notifyDataSetChanged();
+		}
 	}
 
 	public RHSCCourtTimeAdapter getListAdapter() {

@@ -43,7 +43,7 @@ import android.widget.AdapterView.OnItemClickListener;
 public class RHSCMemberListFragment extends Fragment {
 	
 	private RHSCMemberList members;
-	private RHSCMemberAdapter adapter;
+	private RHSCMemberAdapter adapter = null;
 	
 	public RHSCMemberAdapter getAdapter() {
 		return adapter;
@@ -116,5 +116,15 @@ public class RHSCMemberListFragment extends Fragment {
 		
 		return view;
 	}
+
+	public void reload() {
+		if (members != null) {
+			members.load();
+		}
+		if (adapter != null) {
+			adapter.notifyDataSetChanged();
+		}
+	}
+
 
 }

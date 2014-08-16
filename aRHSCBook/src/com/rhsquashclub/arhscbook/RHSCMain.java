@@ -148,9 +148,34 @@ public class RHSCMain extends ActionBarActivity {
 		if (id == R.id.action_settings) {
 			Intent intent = new Intent(this,
 					SettingsActivity.class);
-			startActivity(intent);
+			startActivityForResult(intent,99);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == 99) {
+			//
+			SharedPreferences sharedPrefs = PreferenceManager
+					.getDefaultSharedPreferences(this);
+			RHSCServer.get()
+					.setURL(sharedPrefs.getString("serverHostname", ""));
+			RHSCPreferences.get().setServerName(
+					sharedPrefs.getString("serverHostname", ""));
+			RHSCPreferences.get()
+					.setUserid(sharedPrefs.getString("userid", ""));
+			RHSCPreferences.get().setPassword(
+					sharedPrefs.getString("password", ""));
+			RHSCUser.get().authenticate(this);
+		}
+	}
+	
+	public void reload() {
+		courtListFragment.reload();
+		myBookingsFragment.reload();
+		memberListFragment.reload();
 	}
 }

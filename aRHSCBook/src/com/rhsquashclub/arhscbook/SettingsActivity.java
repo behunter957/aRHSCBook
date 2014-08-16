@@ -3,6 +3,7 @@ package com.rhsquashclub.arhscbook;
 import java.util.List;
 
 import com.rhsquashclub.arhscbook.model.RHSCPreferences;
+import com.rhsquashclub.arhscbook.model.RHSCUser;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -34,10 +35,10 @@ public class SettingsActivity extends PreferenceActivity {
     	return true;
     }
 
-    /**
+   /**
      * This fragment shows the preferences for the first header.
      */
-    public static class SettingsFragment extends PreferenceFragment implements OnSharedPreferenceChangeListener {
+    public static class SettingsFragment extends PreferenceFragment  {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -52,26 +53,6 @@ public class SettingsActivity extends PreferenceActivity {
             addPreferencesFromResource(R.xml.settings);
         }
 
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-                String key) {
-                if (key.equals("serverHostname")) {
-                    Preference connectionPref = findPreference(key);
-                    // Set summary to be the user-description for the selected value
-                    RHSCPreferences.get().setServerName(sharedPreferences.getString("serverHostname", ""));
-                }
-                if (key.equals("userid")) {
-                    Preference connectionPref = findPreference(key);
-                    // Set summary to be the user-description for the selected value
-                    RHSCPreferences.get().setServerName(sharedPreferences.getString("userid", ""));
-                }
-                if (key.equals("password")) {
-                    Preference connectionPref = findPreference(key);
-                    // Set summary to be the user-description for the selected value
-                    RHSCPreferences.get().setServerName(sharedPreferences.getString("password", ""));
-                }
-                // TODO try again to log in
-            }
-        
     }
 
     /**

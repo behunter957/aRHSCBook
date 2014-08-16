@@ -43,11 +43,11 @@ import android.widget.Toast;
 
 public class RHSCMyBookingsFragment extends Fragment {
 
-	private RHSCMyBookings bookings;
+	private RHSCMyBookings bookings = null;
 	
 	private RHSCCourtTime selectedBooking;
 	
-	private RHSCMyBookingsAdapter listAdapter;
+	private RHSCMyBookingsAdapter listAdapter = null;
 
 	public RHSCMyBookingsFragment() {
 		// TODO Auto-generated constructor stub
@@ -136,6 +136,19 @@ public class RHSCMyBookingsFragment extends Fragment {
 			Log.i("RHSCMyBookingsFragment","not logged on");
 		}
 		return view;
+	}
+
+	public void reload() {
+		if (RHSCUser.get().isLoggedOn()) {
+			if (bookings != null) {
+				String[] parms = { RHSCUser.get().getName() };
+				RHSCMyBookingsTask bgTask = new RHSCMyBookingsTask();
+				bgTask.execute(parms);
+			}
+		}
+		if (listAdapter != null) {
+			listAdapter.notifyDataSetChanged();
+		}
 	}
 
 	public RHSCMyBookingsAdapter getListAdapter() {

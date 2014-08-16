@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
     <EditTextPreference android:key="serverHostname" android:title="Booking Server" android:defaultValue="www.bhsquashclub.com"/>
-    <EditTextPreference android:key="userid" android:title="User ID" android:defaultValue="bhunter"/>
-    <EditTextPreference android:key="password" android:title="Password" android:defaultValue="Maxw3ll"/>
+    <EditTextPreference android:key="userid" android:title="User ID" android:defaultValue="userid"/>
+    <EditTextPreference android:key="password" android:title="Password" android:defaultValue="password"/>
 </PreferenceScreen>

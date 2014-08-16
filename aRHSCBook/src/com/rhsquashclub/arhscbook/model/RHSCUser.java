@@ -18,12 +18,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.rhsquashclub.arhscbook.RHSCMain;
+
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class RHSCUser extends RHSCMember {
 	
 	private static RHSCUser user;
+	private RHSCMain main = null;
+	private boolean callMain = false;
 	
 	private boolean loggedOn;
 	
@@ -44,6 +50,14 @@ public class RHSCUser extends RHSCMember {
 	}
 
 	public void authenticate() {
+		callMain = false;
+		RHSCLogonTask bgTask = new RHSCLogonTask();
+		bgTask.execute();
+	}
+	
+	public void authenticate(RHSCMain main) {
+		this.main = main;
+		callMain = true;
 		RHSCLogonTask bgTask = new RHSCLogonTask();
 		bgTask.execute();
 	}
@@ -111,6 +125,9 @@ public class RHSCUser extends RHSCMember {
 						Log.i("RHSCUser", "authenticated");
 						loadFromJSON(jUser);
 						loggedOn = true;
+						if (callMain) {
+							main.reload();
+						}
 					} else {
 						Log.i("RHSCUser", "NOT authenticated");
 						loggedOn = false;
