@@ -158,7 +158,7 @@ public class RHSCMyBookingsFragment extends Fragment {
 	private class RHSCMyBookingsTask extends AsyncTask<String, Void, String> {
 		
 		public URI getRequestURI(String uid) {
-			String myURL = String.format("http://%s/Reserve/IOSMyBookingsJSON.php?uid=%s",
+			String myURL = String.format("http://%s/Reserve20/IOSMyBookingsJSON.php?uid=%s",
 					RHSCServer.get().getURL(), uid);
 			try {
 				URI targetURI = new URI(myURL);
@@ -224,7 +224,7 @@ public class RHSCMyBookingsFragment extends Fragment {
 	private class RHSCCancelCourtTimeTask extends AsyncTask<String, Void, String> {
 		
 		public URI getRequestURI(String[] parms) {
-			String myURL = String.format("http://%s/Reserve/IOSCancelBookingJSON.php?b_id=%s&player1=%s&player2=%s&player3=%s&player4=%s&uid=%s&channel=%s",
+			String myURL = String.format("http://%s/Reserve20/IOSCancelBookingJSON.php?b_id=%s&player1=%s&player2=%s&player3=%s&player4=%s&uid=%s&channel=%s",
 						RHSCServer.get().getURL(), parms[0], parms[1], parms[2], parms[3], parms[4], RHSCUser.get().getName(),"aRHSCBook", parms[5]);
 			Log.i("CancelCourtTime",myURL);
 			try {

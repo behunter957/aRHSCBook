@@ -19,8 +19,8 @@ public class RHSCPreferences {
 	
 	private RHSCPreferences() {
 		serverName = "www.bhsquashclub.com";
-		userid = "bhunter";
-		password = "Maxw3ll";
+		userid = "userid";
+		password = "password";
 		includeBookings = true;
 		courtSelection = RHSCCourtSelection.All;
 	}
