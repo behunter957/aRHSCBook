@@ -380,6 +380,7 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 		public URI getRequestURI(String scheddate,String courttype,String include,String uid) {
 			String myURL = String.format("http://%s/Reserve/IOSTimesJSON.php?scheddate=%s&courttype=%s&include=%s&uid=%s",
 					RHSCServer.get().getURL(), scheddate, courttype, include, uid);
+			Log.i("SelectCourtTime",myURL);
 			try {
 				URI targetURI = new URI(myURL);
 				return targetURI;
@@ -414,16 +415,16 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 	                        while ((line = reader.readLine()) != null) {
 	                                builder.append(line);
 	                        }
-//	                        Log.v("Getter", "Your data: " + builder.toString()); //response data
+	                        Log.i("SelectCourtTime", builder.toString()); //response data
 	                        return builder.toString();
 	                } else {
-	                        Log.e("Getter", "Failed to download file");
+	                        Log.e("SelectCourtTime", "Failed to download file");
 	                }
 	        } catch (ClientProtocolException e) {
-	        		Log.e("Getter", "ClientProtocolException on ".concat(targetURI.toString()));
+	        		Log.e("SelectCourtTime", "ClientProtocolException on ".concat(targetURI.toString()));
 	                e.printStackTrace();
 	        } catch (IOException e) {
-	            	Log.e("Getter", "IOException on ".concat(targetURI.toString()));
+	            	Log.e("SelectCourtTime", "IOException on ".concat(targetURI.toString()));
 	                e.printStackTrace();
 	        }
 	        
