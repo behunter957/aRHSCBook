@@ -77,6 +77,8 @@ public class BookSinglesActivity extends Activity {
 		String ctdText = String.format("%s on %s", targetCourt.getCourt(),
 				new SimpleDateFormat("EEEE, MMMM d 'at' h:mm", Locale.ENGLISH)
 						.format(targetCourt.getCourtTime()));
+		TextView pl1Name = (TextView) findViewById(R.id.textView3);
+		pl1Name.setText(RHSCUser.get().getDisplayName());
 		TextView courtDesc = (TextView) findViewById(R.id.courtTimeDesc);
 		courtDesc.setText(ctdText);
 
