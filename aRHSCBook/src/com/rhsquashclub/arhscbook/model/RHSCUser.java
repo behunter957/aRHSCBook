@@ -65,7 +65,7 @@ public class RHSCUser extends RHSCMember {
 	private class RHSCLogonTask extends AsyncTask<Void, Void, String> {
 		
 		public URI getRequestURI() {
-			String myURL = String.format("http://%s/Reserve/IOSUserLogonJSON.php?uid=%s&pwd=%s",
+			String myURL = String.format("http://%s/Reserve20/IOSUserLogonJSON.php?uid=%s&pwd=%s",
 					RHSCServer.get().getURL(),RHSCPreferences.get().getUserid(),
 					RHSCPreferences.get().getPassword());
 			try {

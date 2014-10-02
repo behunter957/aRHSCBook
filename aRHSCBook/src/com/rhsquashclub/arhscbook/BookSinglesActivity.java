@@ -224,7 +224,7 @@ public class BookSinglesActivity extends Activity {
 
 	private boolean lockCourt(String booking, String uid) {
 		String myURL = String
-				.format("http://%s/Reserve/IOSLockBookingJSON.php?booking_id=%s&uid=%s",
+				.format("http://%s/Reserve20/IOSLockBookingJSON.php?booking_id=%s&uid=%s",
 						RHSCServer.get().getURL(), booking, uid);
 		try {
 			URI targetURI = new URI(myURL);
@@ -272,7 +272,7 @@ public class BookSinglesActivity extends Activity {
 
 	private void unlockCourt(String booking) {
 		String myURL = String.format(
-				"http://%s/Reserve/IOSUnlockBookingJSON.php?booking_id=%s",
+				"http://%s/Reserve20/IOSUnlockBookingJSON.php?booking_id=%s",
 				RHSCServer.get().getURL(), booking);
 		try {
 			URI targetURI = new URI(myURL);
@@ -316,7 +316,7 @@ public class BookSinglesActivity extends Activity {
 
 		public URI getRequestURI(String booking, String uid) {
 			String myURL = String
-					.format("http://%s/Reserve/IOSLockBookingJSON.php?bookingId=%s&uid=%s",
+					.format("http://%s/Reserve20/IOSLockBookingJSON.php?bookingId=%s&uid=%s",
 							RHSCServer.get().getURL(), booking, uid);
 			Log.i("LockCourtTimes", myURL);
 			try {
@@ -402,7 +402,7 @@ public class BookSinglesActivity extends Activity {
 
 		public URI getRequestURI(String booking) {
 			String myURL = String.format(
-					"http://%s/Reserve/IOSLockBookingJSON.php?booking_id=%s",
+					"http://%s/Reserve20/IOSLockBookingJSON.php?booking_id=%s",
 					RHSCServer.get().getURL(), booking);
 			try {
 				URI targetURI = new URI(myURL);
@@ -463,7 +463,7 @@ public class BookSinglesActivity extends Activity {
 
 		public URI getRequestURI(String[] parms) {
 			String myURL = String
-					.format("http://%s/Reserve/IOSUpdateBookingJSON.php?b_id=%s&player1=%s&player2=%s&uid=%s&channel=%s&courtEvent=%s",
+					.format("http://%s/Reserve20/IOSUpdateBookingJSON.php?b_id=%s&player1=%s&player2=%s&uid=%s&channel=%s&courtEvent=%s",
 							RHSCServer.get().getURL(), parms[0], parms[1],
 							parms[2], RHSCUser.get().getName(),
 							"aRHSCBook", parms[3]);

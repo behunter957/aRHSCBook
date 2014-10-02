@@ -378,7 +378,7 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 	private class RHSCSelectCourtTimesTask extends AsyncTask<String, Void, String> {
 		
 		public URI getRequestURI(String scheddate,String courttype,String include,String uid) {
-			String myURL = String.format("http://%s/Reserve/IOSTimesJSON.php?scheddate=%s&courttype=%s&include=%s&uid=%s",
+			String myURL = String.format("http://%s/Reserve20/IOSTimesJSON.php?scheddate=%s&courttype=%s&include=%s&uid=%s",
 					RHSCServer.get().getURL(), scheddate, courttype, include, uid);
 			Log.i("SelectCourtTime",myURL);
 			try {
@@ -445,7 +445,7 @@ public class RHSCSelectedCourtTimesFragment extends Fragment {
 	private class RHSCCancelCourtTimeTask extends AsyncTask<String, Void, String> {
 		
 		public URI getRequestURI(String[] parms) {
-			String myURL = String.format("http://%s/Reserve/IOSCancelBookingJSON.php?b_id=%s&player1=%s&player2=%s&player3=%s&player4=%s&uid=%s&channel=%s",
+			String myURL = String.format("http://%s/Reserve20/IOSCancelBookingJSON.php?b_id=%s&player1=%s&player2=%s&player3=%s&player4=%s&uid=%s&channel=%s",
 						RHSCServer.get().getURL(), parms[0], parms[1], parms[2], parms[3], parms[4], RHSCUser.get().getName(),"aRHSCBook", parms[5]);
 			Log.i("CancelCourtTime",myURL);
 			try {

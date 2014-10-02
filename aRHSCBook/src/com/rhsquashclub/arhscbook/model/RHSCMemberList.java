@@ -121,7 +121,7 @@ public class RHSCMemberList extends ArrayList<RHSCMember> {
 	private class RHSCGetMemberListTask extends AsyncTask<Void, Void, String> {
 		
 		public URI getRequestURI() {
-			String myURL = String.format("http://%s/Reserve/IOSMemberListJSON.php",
+			String myURL = String.format("http://%s/Reserve20/IOSMemberListJSON.php",
 					RHSCServer.get().getURL());
 			try {
 				URI targetURI = new URI(myURL);
